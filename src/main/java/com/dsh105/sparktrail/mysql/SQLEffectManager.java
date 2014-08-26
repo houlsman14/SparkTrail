@@ -49,21 +49,18 @@ public class SQLEffectManager {
                                     String data = DataFactory.serialiseEffects(eh.getEffects(), false, false, true);
 
                                     if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
-                                          statement = con.prepareStatement("INSERT INTO PlayerEffects (?, Effects) VALUES (?, ?);");
-                                          statement.setString(1, "PlayerName");
-                                          statement.setString(2, eh.getDetails().playerName);
+                                          statement = con.prepareStatement("INSERT INTO PlayerEffects (PlayerName, Effects) VALUES (?, ?);");
+                                          statement.setString(1, eh.getDetails().playerName);
                                     } else if (eh.getEffectType().equals(EffectHolder.EffectType.LOCATION)) {
-                                          statement = con.prepareStatement("INSERT INTO PlayerEffects (?, Effects) VALUES (?, ?);");
-                                          statement.setString(1, "Location");
-                                          statement.setString(2, DataFactory.serialiseLocation(eh.getLocation()));
+                                          statement = con.prepareStatement("INSERT INTO PlayerEffects (Location, Effects) VALUES (?, ?);");
+                                          statement.setString(1, DataFactory.serialiseLocation(eh.getLocation()));
                                     } else if (eh.getEffectType().equals(EffectHolder.EffectType.MOB)) {
-                                          statement = con.prepareStatement("INSERT INTO MobEffects (?, Effects) VALUES (?, ?);");
-                                          statement.setString(1, "MobUUID");
-                                          statement.setString(2, eh.getDetails().mobUuid.toString());
+                                          statement = con.prepareStatement("INSERT INTO MobEffects (MobUUID, Effects) VALUES (?, ?);");
+                                          statement.setString(1, eh.getDetails().mobUuid.toString());
                                     }
 
                                     if (statement != null) {
-                                          statement.setString(3, data);
+                                          statement.setString(2, data);
                                           statement.executeUpdate();
                                     }
 
