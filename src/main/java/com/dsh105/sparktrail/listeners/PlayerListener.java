@@ -55,7 +55,8 @@ public class PlayerListener implements Listener {
                                     Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
                               }
                         }
-                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 20L);
+                        //Later on.
+                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 100L);
                   return;
             }
             new BukkitRunnable() {
