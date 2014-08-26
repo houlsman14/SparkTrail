@@ -253,9 +253,9 @@ public class DataFactory {
                               } else if (pt == ParticleType.FIREWORK) {
                                     builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
                               } else if (pt == ParticleType.BLOCKBREAK) {
-                                    builder.append(((BlockBreak) e).idValue + "-" + ((BlockBreak) e).metaValue);
+                                    builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
                               } else if (pt == ParticleType.ITEMSPRAY) {
-                                    builder.append(((BlockBreak) e).idValue + "-" + ((BlockBreak) e).metaValue);
+                                    builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
                               } else if (pt == ParticleType.POTION) {
                                     builder.append(((Potion) e).potionType.toString());
                               } else if (pt == ParticleType.SMOKE) {
@@ -269,7 +269,6 @@ public class DataFactory {
                   }
                   builder.append("," + (includeSpace ? " " : ""));
             }
-            builder.deleteCharAt(builder.length() - 2);
             return builder.toString();
       }
 

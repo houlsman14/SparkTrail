@@ -28,7 +28,7 @@ public class AutoSave {
                         SparkTrailPlugin plugin = SparkTrailPlugin.getInstance();
                         for (EffectHolder e : plugin.EH.getEffectHolders()) {
                               plugin.EH.save(e);
-                              plugin.SQLH.save(e);
+                              plugin.SQLH.update(e);
                         }
                   }
             }.runTaskTimer(SparkTrailPlugin.getInstance(), (20 * timer) / 2, 20 * timer);

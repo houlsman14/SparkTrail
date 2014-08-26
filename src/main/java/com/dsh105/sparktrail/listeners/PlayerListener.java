@@ -17,6 +17,7 @@
 package com.dsh105.sparktrail.listeners;
 
 import com.dsh105.sparktrail.SparkTrailPlugin;
+import com.dsh105.sparktrail.config.ConfigOptions;
 import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.trail.type.ItemSpray;
@@ -26,7 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -42,21 +43,31 @@ public class PlayerListener implements Listener {
       }
 
       @EventHandler
-      public void onLogin(PlayerLoginEvent event) {
+      public void onLogin(PlayerJoinEvent event) {
             final Player p = event.getPlayer();
-            if (event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) {
+            if (ConfigOptions.instance.useSql()) {
                   new BukkitRunnable() {
                         @Override
                         public void run() {
-                              if (p != null) {
-                                    EffectHolder eh = EffectManager.getInstance().createFromFile(p.getName());
-                                    if (eh != null && !eh.getEffects().isEmpty()) {
-                                          Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
-                                    }
+                              EffectHolder eh = SparkTrailPlugin.getInstance().SQLH.load(p.getName());
+                              if (eh != null && !eh.getEffects().isEmpty()) {
+                                    Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
                               }
                         }
-                  }.runTaskLater(SparkTrailPlugin.getInstance(), 20L);
+                  }.runTaskAsynchronously(SparkTrailPlugin.getInstance());
+                  return;
             }
+            new BukkitRunnable() {
+                  @Override
+                  public void run() {
+                        if (p != null) {
+                              EffectHolder eh = EffectManager.getInstance().createFromFile(p.getName());
+                              if (eh != null && !eh.getEffects().isEmpty()) {
+                                    Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
+                              }
+                        }
+                  }
+            }.runTask(SparkTrailPlugin.getInstance());
       }
 
       @EventHandler

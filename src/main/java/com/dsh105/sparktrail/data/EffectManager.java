@@ -20,6 +20,7 @@ import com.dsh105.dshutils.config.YAMLConfig;
 import com.dsh105.dshutils.logger.Logger;
 import com.dsh105.dshutils.util.EnumUtil;
 import com.dsh105.sparktrail.SparkTrailPlugin;
+import com.dsh105.sparktrail.config.ConfigOptions;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
 import com.dsh105.sparktrail.trail.Effect;
 import com.dsh105.sparktrail.trail.EffectHolder;
@@ -65,7 +66,7 @@ public class EffectManager {
             while (i.hasNext()) {
                   EffectHolder e = i.next();
                   save(e);
-                  SQLEffectManager.instance.save(e);
+                  SQLEffectManager.instance.update(e);
                   e.stop();
                   i.remove();
             }
@@ -76,6 +77,10 @@ public class EffectManager {
       }
 
       public void save(EffectHolder e) {
+            if (ConfigOptions.instance.useSql()) {
+                  return;
+            }
+            
             if (e.isPersistent()) {
                   clearFromFile(e);
                   if (e.getEffects().isEmpty()) {
@@ -299,7 +304,7 @@ public class EffectManager {
 
       public void remove(EffectHolder e) {
             save(e);
-            SQLEffectManager.instance.save(e);
+            SQLEffectManager.instance.update(e);
             this.clearFromMemory(e);
       }
 }
