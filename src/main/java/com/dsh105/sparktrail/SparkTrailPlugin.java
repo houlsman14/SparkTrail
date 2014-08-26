@@ -163,7 +163,7 @@ public class SparkTrailPlugin extends DSHPlugin {
             this.EH = new EffectManager();
             this.SQLH = new SQLEffectManager();
 
-            if (this.config.getBoolean("useSql", false)) {
+            if (this.config.getBoolean("sql.use", false)) {
                   String host = config.getString("sql.host", "localhost");
                   int port = config.getInt("sql.port", 3306);
                   String db = config.getString("sql.database", "SparkTrail");
