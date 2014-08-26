@@ -65,7 +65,6 @@ public class SQLEffectManager {
                                     }
 
                               } catch (SQLException e) {
-                                    e.printStackTrace();
                               } finally {
                                     try {
                                           if (statement != null) {
