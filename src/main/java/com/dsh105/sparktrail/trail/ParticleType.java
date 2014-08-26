@@ -62,7 +62,7 @@ public enum ParticleType {
       SNOWBALL(Snowball.class, 20, Material.SNOW_BALL, (short) 0, "Snowball", false, true),
       SPARKLE(Sparkle.class, 20, Material.EMERALD, (short) 0, "Sparkle", false, true),
       SPLASH(Splash.class, 20, Material.WATER, (short) 0, "Splash", false, true),
-      SWIRL(Swirl.class, 20, Material.BEACON, (short) 0, "Swirl", true, true, EffectType.LOCATION),
+      SWIRL(Swirl.class, 20, Material.BEACON, (short) 0, "Swirl", true, true),
       VOID(Void.class, 20, Material.ENDER_PORTAL, (short) 0, "Void", false, true),
       WATERDRIP(WaterDrip.class, 20, Material.WATER_LILY, (short) 0, "Water Drip", false, true),
       SOUND(Sound.class, 20, Material.JUKEBOX, (short) 0, "Sound", false, false);

@@ -31,7 +31,6 @@
  * You should have received a copy of the GNU General Public License
  * along with EchoPet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.dsh105.sparktrail.util.protocol.wrapper;
 
 import com.dsh105.sparktrail.SparkTrailPlugin;
@@ -42,23 +41,23 @@ import com.dsh105.sparktrail.util.reflection.SafeMethod;
 
 public class WrapperPacketChat extends Packet {
 
-    public WrapperPacketChat() {
-        super(PacketFactory.PacketType.CHAT);
-    }
+      public WrapperPacketChat() {
+            super(PacketFactory.PacketType.CHAT);
+      }
 
-    public void setMessage(String chatComponent) {
-        if (!SparkTrailPlugin.isUsingNetty) {
-            if (!(chatComponent instanceof String)) {
-                throw new IllegalArgumentException("Chat component for 1.6 chat packet must be a String!");
+      public void setMessage(String chatComponent) {
+            if (!SparkTrailPlugin.isUsingNetty) {
+                  if (!(chatComponent instanceof String)) {
+                        throw new IllegalArgumentException("Chat component for 1.6 chat packet must be a String!");
+                  }
             }
-        }
-        this.write("a", new SafeMethod(ReflectionUtil.getNMSClass("ChatSerializer"), "a", String.class).invoke(null, chatComponent));
-    }
+            this.write("a", new SafeMethod(ReflectionUtil.getNMSClass("ChatSerializer"), "a", String.class).invoke(null, chatComponent));
+      }
 
-    public String getMessage() {
-        if (!SparkTrailPlugin.isUsingNetty) {
-            return (String) this.read("message");
-        }
-        return (String) new SafeMethod(ReflectionUtil.getNMSClass("ChatSerializer"), "a", ReflectionUtil.getNMSClass("IChatBaseComponent")).invoke(null, this.read("a"));
-    }
+      public String getMessage() {
+            if (!SparkTrailPlugin.isUsingNetty) {
+                  return (String) this.read("message");
+            }
+            return (String) new SafeMethod(ReflectionUtil.getNMSClass("ChatSerializer"), "a", ReflectionUtil.getNMSClass("IChatBaseComponent")).invoke(null, this.read("a"));
+      }
 }

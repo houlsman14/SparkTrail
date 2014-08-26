@@ -31,25 +31,24 @@
  * You should have received a copy of the GNU General Public License
  * along with EchoPet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.dsh105.sparktrail.util.protocol.wrapper;
 
 public class AbstractWrapper {
 
-    private Object handle;
+      private Object handle;
 
-    public AbstractWrapper() {
-    }
+      public AbstractWrapper() {
+      }
 
-    protected void setHandle(Object handle) {
-        if (this.handle == null) {
-            this.handle = handle;
-            return;
-        }
-        throw new RuntimeException("Handle already set!");
-    }
+      protected void setHandle(Object handle) {
+            if (this.handle == null) {
+                  this.handle = handle;
+                  return;
+            }
+            throw new RuntimeException("Handle already set!");
+      }
 
-    public Object getHandle() {
-        return this.handle;
-    }
+      public Object getHandle() {
+            return this.handle;
+      }
 }

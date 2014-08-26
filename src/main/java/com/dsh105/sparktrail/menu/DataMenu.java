@@ -59,28 +59,11 @@ public class DataMenu extends Menu {
       public EffectHolder.EffectType effectType;
       public ParticleType particleType;
 
-      public DataMenu(Player viewer, UUID mobUuid, ParticleType particleType) {
-            this(viewer, EffectHolder.EffectType.MOB, StringUtil.capitalise(particleType.toString()) + " - Trail GUI");
-            this.particleType = particleType;
-            this.mobUuid = mobUuid;
-            setItems();
-      }
-
       public DataMenu(Player viewer, String playerName, ParticleType particleType) {
             this(viewer, EffectHolder.EffectType.PLAYER, StringUtil.capitalise(particleType.toString()) + " - Trail GUI");
             this.particleType = particleType;
             this.playerName = playerName;
             Player p = Bukkit.getPlayerExact(playerName);
-            if (p != null) {
-                  this.mobUuid = p.getUniqueId();
-            }
-            setItems();
-      }
-
-      public DataMenu(Player viewer, Location location, ParticleType particleType) {
-            this(viewer, EffectHolder.EffectType.LOCATION, StringUtil.capitalise(particleType.toString()) + " - Trail GUI");
-            this.particleType = particleType;
-            this.location = location;
             setItems();
       }
 
@@ -95,10 +78,6 @@ public class DataMenu extends Menu {
             EffectHolder eh = null;
             if (effectType == EffectHolder.EffectType.PLAYER) {
                   eh = EffectManager.getInstance().getEffect(this.playerName);
-            } else if (effectType == EffectHolder.EffectType.LOCATION) {
-                  eh = EffectManager.getInstance().getEffect(this.location);
-            } else if (effectType == EffectHolder.EffectType.MOB) {
-                  eh = EffectManager.getInstance().getEffect(this.mobUuid);
             }
 
             int i = 0;
@@ -117,16 +96,7 @@ public class DataMenu extends Menu {
                                                       Logger.log(Logger.LogLevel.WARNING, "Could not initialise Trail Data Menu [Player: " + this.viewer + "] for Particle [" + particleType.toString() + "].", ex, true);
                                                       continue;
                                                 }
-                                          } /*else if (this.particleType == ParticleType.NOTE) {
-                                           try {
-                                           if (((Note) e).noteType == Note.NoteType.valueOf(pdi.toString().toUpperCase())) {
-                                           hasEffect = true;
-                                           }
-                                           } catch (Exception ex) {
-                                           Logger.log(Logger.LogLevel.WARNING, "Could not initialise Trail Data Menu [Player: " + this.viewer.getName() + "] for Particle [" + particleType.toString() + "].", ex, true);
-                                           continue;
-                                           }
-                                           }*/ else if (this.particleType == ParticleType.POTION) {
+                                          } else if (this.particleType == ParticleType.POTION) {
                                                 try {
                                                       if (((Potion) e).potionType == Potion.PotionType.valueOf(pdi.toString().toUpperCase())) {
                                                             hasEffect = true;

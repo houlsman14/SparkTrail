@@ -60,7 +60,7 @@ public class MenuListener implements Listener {
             }
       }
 
-    // TODO: This menu isn't very well done :\
+      // TODO: This menu isn't very well done :\
       // It could really be done a LOOOOOT better than this
       @EventHandler
       public void onInvClick(InventoryClickEvent event) {
@@ -123,8 +123,6 @@ public class MenuListener implements Listener {
                                                             return;
                                                       }
                                                       WaitingData wd = new WaitingData(menu.effectType, pt);
-                                                      wd.location = menu.location;
-                                                      wd.mobUuid = menu.mobUuid;
                                                       wd.playerName = menu.playerName;
                                                       InputFactory.prompt(player, pt, wd);
                                                       /*MenuChatListener.AWAITING_DATA.put(player.getName(), wd);
@@ -147,10 +145,6 @@ public class MenuListener implements Listener {
                                                 DataMenu dm = null;
                                                 if (menu.effectType == EffectHolder.EffectType.PLAYER) {
                                                       dm = new DataMenu(player, menu.playerName, pt);
-                                                } else if (menu.effectType == EffectHolder.EffectType.LOCATION) {
-                                                      dm = new DataMenu(player, menu.location, pt);
-                                                } else if (menu.effectType == EffectHolder.EffectType.MOB) {
-                                                      dm = new DataMenu(player, menu.mobUuid, pt);
                                                 }
                                                 if (dm != null) {
                                                       if (dm.fail) {
@@ -195,10 +189,6 @@ public class MenuListener implements Listener {
                                     ParticleMenu pm = null;
                                     if (menu.effectType == EffectHolder.EffectType.PLAYER) {
                                           pm = new ParticleMenu(player, menu.playerName);
-                                    } else if (menu.effectType == EffectHolder.EffectType.LOCATION) {
-                                          pm = new ParticleMenu(player, menu.location);
-                                    } else if (menu.effectType == EffectHolder.EffectType.MOB) {
-                                          pm = new ParticleMenu(player, menu.mobUuid);
                                     }
                                     if (pm != null) {
                                           if (pm.fail) {
@@ -296,7 +286,7 @@ public class MenuListener implements Listener {
                                                                   Swirl.SwirlType swirlType = Swirl.SwirlType.valueOf(pdi.toString().toUpperCase());
                                                                   ParticleDetails pd = new ParticleDetails(pt);
                                                                   pd.swirlType = swirlType;
-                                                                  pd.setPlayer(player.getName(), player.getUniqueId());
+                                                                  pd.setPlayer(player.getName());
                                                                   if (Permission.hasEffectPerm(player, true, pt, swirlType.toString().toLowerCase(), (menu.playerName != null && menu.playerName.equals(player.getName())) ? null : menu.effectType.toString().toLowerCase())) {
                                                                         if (b) {
                                                                               if (removeEffect(player, pd, menu.effectType, menu)) {
@@ -368,16 +358,8 @@ public class MenuListener implements Listener {
                         Logger.log(Logger.LogLevel.SEVERE, "Effect creation failed (" + menu.playerName + ") while adding Particle Type (" + particleType.toString() + ") [Reported from MenuListener].", true);
                         return false;
                   }
-                  pd.setPlayer(menu.playerName, p.getUniqueId());
+                  pd.setPlayer(menu.playerName);
                   hashSet.add(pd);
-            } else if (effectType == EffectHolder.EffectType.LOCATION) {
-                  ParticleDetails pd = new ParticleDetails(particleType);
-                  hashSet.add(pd);
-            } else if (effectType == EffectHolder.EffectType.MOB) {
-                  ParticleDetails pd = new ParticleDetails(particleType);
-                  pd.setMob(menu.mobUuid);
-                  hashSet.add(pd);
-
             }
 
             return eh.addEffect(particleType, true);
@@ -397,17 +379,9 @@ public class MenuListener implements Listener {
 
       private EffectHolder getHolder(Player player, EffectHolder.EffectType effectType, ParticleType particleType, Menu menu) {
             EffectHolder eh = null;
-            if (effectType == EffectHolder.EffectType.LOCATION) {
-                  try {
-                        eh = EffectManager.getInstance().getEffect(menu.location);
-                  } catch (Exception e) {
-                        Logger.log(Logger.LogLevel.SEVERE, "Failed to create Location (" + DataFactory.serialiseLocation(menu.location) + ") whilst finding EffectHolder (" + particleType.toString() + ")", e, true);
-                        return null;
-                  }
-            } else if (effectType == EffectHolder.EffectType.PLAYER) {
+
+            if (effectType == EffectHolder.EffectType.PLAYER) {
                   eh = EffectManager.getInstance().getEffect(menu.playerName);
-            } else if (effectType == EffectHolder.EffectType.MOB) {
-                  eh = EffectManager.getInstance().getEffect(menu.mobUuid);
             }
 
             if (eh == null) {
@@ -418,22 +392,6 @@ public class MenuListener implements Listener {
                               return null;
                         }
                         eh = EffectCreator.createPlayerHolder(menu.playerName);
-                  } else if (effectType == EffectHolder.EffectType.LOCATION) {
-                        Location l;
-                        try {
-                              l = menu.location;
-                              /*String[] s = data.split(", ");
-                               l = new Location(Bukkit.getWorld(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]));*/
-                        } catch (Exception e) {
-                              l = null;
-                        }
-                        if (l == null) {
-                              Logger.log(Logger.LogLevel.SEVERE, "Failed to create Location (" + DataFactory.serialiseLocation(menu.location) + ") whilst finding EffectHolder (" + particleType.toString() + ") [Reported from MenuListener].", true);
-                              return null;
-                        }
-                        eh = EffectCreator.createLocHolder(l);
-                  } else if (effectType == EffectHolder.EffectType.MOB) {
-                        eh = EffectCreator.createMobHolder(menu.mobUuid);
                   }
             }
 

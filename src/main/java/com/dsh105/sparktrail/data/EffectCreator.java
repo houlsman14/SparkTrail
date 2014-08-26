@@ -36,42 +36,20 @@ public class EffectCreator {
             return effectHolder;
       }
 
-      public static EffectHolder createLocHolder(Location location) {
-            EffectHolder effectHolder = new EffectHolder(EffectType.LOCATION);
-            effectHolder.updateLocation(location);
-            return createHolder(effectHolder);
-      }
-
       public static EffectHolder createPlayerHolder(String playerName) {
             EffectHolder effectHolder = new EffectHolder(EffectType.PLAYER);
             effectHolder.getDetails().playerName = playerName;
             return createHolder(effectHolder);
       }
 
-      public static EffectHolder createMobHolder(UUID uuid) {
-            EffectHolder effectHolder = new EffectHolder(EffectType.MOB);
-            effectHolder.getDetails().mobUuid = uuid;
-            return createHolder(effectHolder);
-      }
-
       public static EffectHolder prepareNew(WaitingData data) {
             EffectHolder eh = null;
-            if (data.effectType == EffectHolder.EffectType.LOCATION) {
-                  eh = EffectManager.getInstance().getEffect(data.location);
-            } else if (data.effectType == EffectHolder.EffectType.PLAYER) {
+            if (data.effectType == EffectHolder.EffectType.PLAYER) {
                   eh = EffectManager.getInstance().getEffect(data.playerName);
-            } else if (data.effectType == EffectHolder.EffectType.MOB) {
-                  eh = EffectManager.getInstance().getEffect(data.mobUuid);
             }
-
             if (eh == null) {
                   if (data.effectType == EffectHolder.EffectType.PLAYER) {
                         eh = EffectCreator.createPlayerHolder(data.playerName);
-                  } else if (data.effectType == EffectHolder.EffectType.LOCATION) {
-                        Location l = data.location;
-                        eh = EffectCreator.createLocHolder(l);
-                  } else if (data.effectType == EffectHolder.EffectType.MOB) {
-                        eh = EffectCreator.createMobHolder(data.mobUuid);
                   }
             }
             return eh;

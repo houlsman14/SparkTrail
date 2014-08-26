@@ -59,7 +59,7 @@ public class Swirl extends Effect {
                         }
                   }
                   if (entity != null) {
-                        WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity)entity).getHandle());
+                        WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity) entity).getHandle());
                         dataWatcher.watch(7, this.swirlType.getValue());
                         WrapperPacketEntityMetadata meta = new WrapperPacketEntityMetadata();
                         meta.setEntityId(entity.getEntityId());
@@ -88,7 +88,7 @@ public class Swirl extends Effect {
                   }
             }
             if (entity != null) {
-                  WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity)entity).getHandle());
+                  WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity) entity).getHandle());
                   dataWatcher.watch(7, 0);
                   WrapperPacketEntityMetadata meta = new WrapperPacketEntityMetadata();
                   meta.setEntityId(entity.getEntityId());

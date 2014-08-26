@@ -53,9 +53,6 @@ public class EffectHolder extends BukkitRunnable {
       public EffectHolder(EffectType effectType) {
             this.effectType = effectType;
             this.details = new EffectDetails(effectType);
-            if (this.effectType == EffectType.MOB) {
-                  this.persistent = false;
-            }
       }
 
       public boolean isPersistent() {
@@ -74,20 +71,7 @@ public class EffectHolder extends BukkitRunnable {
             if (this.canAddEffect()) {
                   if (this.effectType == EffectType.PLAYER) {
                         ParticleDetails pd = new ParticleDetails(particleType);
-                        pd.setPlayer(this.details.playerName, this.details.mobUuid);
-                        Effect effect = EffectCreator.createEffect(this, particleType, pd.getDetails());
-                        if (effect != null) {
-                              this.effects.add(effect);
-                        }
-                  } else if (this.effectType == EffectType.LOCATION) {
-                        ParticleDetails pd = new ParticleDetails(particleType);
-                        Effect effect = EffectCreator.createEffect(this, particleType, pd.getDetails());
-                        if (effect != null) {
-                              this.effects.add(effect);
-                        }
-                  } else if (this.effectType == EffectType.MOB) {
-                        ParticleDetails pd = new ParticleDetails(particleType);
-                        pd.setMob(this.details.mobUuid);
+                        pd.setPlayer(this.details.playerName);
                         Effect effect = EffectCreator.createEffect(this, particleType, pd.getDetails());
                         if (effect != null) {
                               this.effects.add(effect);
@@ -127,10 +111,7 @@ public class EffectHolder extends BukkitRunnable {
 
       public boolean canAddEffect() {
             int maxEffects = ConfigOptions.instance.getConfig().getInt("maxEffectAmount." + this.getEffectType().toString().toLowerCase(), -1);
-            if (maxEffects > -1 && this.effects.size() >= maxEffects) {
-                  return false;
-            }
-            return true;
+            return maxEffects <= -1 || this.effects.size() < maxEffects;
       }
 
       public boolean hasEffect(ParticleType pt) {
@@ -296,41 +277,6 @@ public class EffectHolder extends BukkitRunnable {
                   if (((Integer) this.locZ) == null || !(this.locZ == l.getBlockZ())) {
                         this.locZ = l.getBlockZ();
                   }
-            } else if (this.effectType == EffectType.MOB) {
-                  if (this.details.mobUuid == null) {
-                        return false;
-                  }
-                  Entity e = null;
-                  for (World w : SparkTrailPlugin.getInstance().getServer().getWorlds()) {
-                        Iterator<Entity> i = w.getEntities().listIterator();
-                        while (i.hasNext()) {
-                              Entity entity = i.next();
-                              if (entity.getUniqueId().equals(this.details.mobUuid)) {
-                                    if (this.world == null || this.world != w) {
-                                          this.world = w;
-                                    }
-                                    e = entity;
-                              }
-                        }
-                  }
-                  if (e == null) {
-                        //Logger.log(Logger.LogLevel.WARNING, "Encountered missing entity (UUID: " + this.details.mobUuid + "). Removing particle effect. Maybe it despawned?", true);
-                        EffectManager.getInstance().remove(this);
-                        return false;
-                  }
-                  Location l = e.getLocation();
-                  if (this.world == null || !this.world.equals(l.getWorld())) {
-                        this.world = l.getWorld();
-                  }
-                  if (((Integer) this.locX) == null || !(this.locX == l.getBlockX())) {
-                        this.locX = l.getBlockX();
-                  }
-                  if (((Integer) this.locY) == null || !(this.locY == l.getBlockY())) {
-                        this.locY = l.getBlockY();
-                  }
-                  if (((Integer) this.locZ) == null || !(this.locZ == l.getBlockZ())) {
-                        this.locZ = l.getBlockZ();
-                  }
             }
             return true;
       }
@@ -380,6 +326,6 @@ public class EffectHolder extends BukkitRunnable {
 
       public enum EffectType {
 
-            LOCATION, PLAYER, MOB;
+            PLAYER;
       }
 }

@@ -44,25 +44,10 @@ public class ParticleMenu extends Menu {
       private int size;
       public EffectHolder.EffectType effectType;
 
-      public ParticleMenu(Player viewer, UUID mobUuid) {
-            this(viewer, EffectHolder.EffectType.MOB, "Trail GUI");
-            this.mobUuid = mobUuid;
-            setItems();
-      }
-
       public ParticleMenu(Player viewer, String playerName) {
             this(viewer, EffectHolder.EffectType.PLAYER, "Trail GUI");
             this.playerName = playerName;
             Player p = Bukkit.getPlayerExact(playerName);
-            if (p != null) {
-                  this.mobUuid = p.getUniqueId();
-            }
-            setItems();
-      }
-
-      public ParticleMenu(Player viewer, Location location) {
-            this(viewer, EffectHolder.EffectType.LOCATION, "Trail GUI");
-            this.location = location;
             setItems();
       }
 
@@ -128,10 +113,6 @@ public class ParticleMenu extends Menu {
             EffectHolder eh = null;
             if (effectType == EffectHolder.EffectType.PLAYER) {
                   eh = EffectManager.getInstance().getEffect(this.playerName);
-            } else if (effectType == EffectHolder.EffectType.LOCATION) {
-                  eh = EffectManager.getInstance().getEffect(this.location);
-            } else if (effectType == EffectHolder.EffectType.MOB) {
-                  eh = EffectManager.getInstance().getEffect(this.mobUuid);
             }
 
             int i = 0;

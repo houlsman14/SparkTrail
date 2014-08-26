@@ -31,7 +31,6 @@
  * You should have received a copy of the GNU General Public License
  * along with EchoPet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.dsh105.sparktrail.util.protocol.wrapper;
 
 import com.dsh105.sparktrail.util.protocol.Packet;
@@ -40,79 +39,79 @@ import net.minecraft.util.com.mojang.authlib.GameProfile;
 
 public class WrapperPacketNamedEntitySpawn extends Packet {
 
-    public WrapperPacketNamedEntitySpawn() {
-        super(PacketFactory.PacketType.NAMED_ENTITY_SPAWN);
-    }
+      public WrapperPacketNamedEntitySpawn() {
+            super(PacketFactory.PacketType.NAMED_ENTITY_SPAWN);
+      }
 
-    public void setEntityId(int id) {
-        this.write("a", id);
-    }
+      public void setEntityId(int id) {
+            this.write("a", id);
+      }
 
-    public int getEntityId() {
-        return (Integer) this.read("a");
-    }
+      public int getEntityId() {
+            return (Integer) this.read("a");
+      }
 
-    public void setGameProfile(GameProfile profile) {
-        this.write("b", profile);
-    }
+      public void setGameProfile(GameProfile profile) {
+            this.write("b", profile);
+      }
 
-    public GameProfile getGameProfile() {
-        return (GameProfile) this.read("b");
-    }
+      public GameProfile getGameProfile() {
+            return (GameProfile) this.read("b");
+      }
 
-    public void setX(double value) {
-        this.write("c", (int) Math.floor(value * 32.0D));
-    }
+      public void setX(double value) {
+            this.write("c", (int) Math.floor(value * 32.0D));
+      }
 
-    public double getX() {
-        return (((Integer) this.read("c")) / 32.0D);
-    }
+      public double getX() {
+            return (((Integer) this.read("c")) / 32.0D);
+      }
 
-    public void setY(double value) {
-        this.write("d", (int) Math.floor(value * 32.0D));
-    }
+      public void setY(double value) {
+            this.write("d", (int) Math.floor(value * 32.0D));
+      }
 
-    public double getY() {
-        return (((Integer) this.read("d")) / 32.0D);
-    }
+      public double getY() {
+            return (((Integer) this.read("d")) / 32.0D);
+      }
 
-    public void setZ(double value) {
-        this.write("e", (int) Math.floor(value * 32.0D));
-    }
+      public void setZ(double value) {
+            this.write("e", (int) Math.floor(value * 32.0D));
+      }
 
-    public double getZ() {
-        return (((Integer) this.read("e")) / 32.0D);
-    }
+      public double getZ() {
+            return (((Integer) this.read("e")) / 32.0D);
+      }
 
-    public void setYaw(float value) {
-        this.write("f", (byte) (value * 256.0F / 360.0F));
-    }
+      public void setYaw(float value) {
+            this.write("f", (byte) (value * 256.0F / 360.0F));
+      }
 
-    public float getYaw() {
-        return (((Byte) this.read("f")) * 360.0F / 256.0F);
-    }
+      public float getYaw() {
+            return (((Byte) this.read("f")) * 360.0F / 256.0F);
+      }
 
-    public void setPitch(float value) {
-        this.write("g", (byte) (value * 256.0F / 360.0F));
-    }
+      public void setPitch(float value) {
+            this.write("g", (byte) (value * 256.0F / 360.0F));
+      }
 
-    public float getPitch() {
-        return (((Byte) this.read("g")) * 360.0F / 256.0F);
-    }
+      public float getPitch() {
+            return (((Byte) this.read("g")) * 360.0F / 256.0F);
+      }
 
-    public void setEquipmentId(int id) {
-        this.write("h", id);
-    }
+      public void setEquipmentId(int id) {
+            this.write("h", id);
+      }
 
-    public int getEquipmentId() {
-        return (Integer) this.read("h");
-    }
+      public int getEquipmentId() {
+            return (Integer) this.read("h");
+      }
 
-    public void setMetadata(WrappedDataWatcher metadata) {
-        this.write("i", metadata.getHandle());
-    }
+      public void setMetadata(WrappedDataWatcher metadata) {
+            this.write("i", metadata.getHandle());
+      }
 
-    public Object getMetadata() {
-        return this.read("i");
-    }
+      public Object getMetadata() {
+            return this.read("i");
+      }
 }

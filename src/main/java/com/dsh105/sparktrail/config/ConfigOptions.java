@@ -83,11 +83,9 @@ public class ConfigOptions extends Options {
             set("enableMenu", true);
 
             // Just set this to 1 so we can have a description
-            set("maxEffectAmount", 1, "Maximum amount of effects a player, location or mob is allowed to have. -1 allows an", "unlimited number.");
+            set("maxEffectAmount", 1, "Maximum amount of effects a player is allowed to have. -1 allows an", "unlimited number.");
 
             set("maxEffectAmount.player", 1);
-            set("maxEffectAmount.location", 1);
-            set("maxEffectAmount.mob", 1);
 
             for (ParticleType pt : ParticleType.values()) {
                   String name = pt.toString().toLowerCase();

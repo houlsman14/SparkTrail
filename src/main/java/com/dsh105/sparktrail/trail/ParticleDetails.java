@@ -55,12 +55,7 @@ public class ParticleDetails {
             return this;
       }
 
-      public void setMob(UUID uuid) {
-            this.uuid = uuid;
-      }
-
-      public void setPlayer(String name, UUID uuid) {
-            this.uuid = uuid;
+      public void setPlayer(String name) {
             this.playerName = name;
       }
 

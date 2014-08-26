@@ -69,7 +69,7 @@ public class SQLEffectManager {
             }
       }
 
-      public void update(EffectHolder eh) {
+      public void updateAsync(EffectHolder eh) {
             if (ConfigOptions.instance.useSql()) {
                   Connection con = null;
                   PreparedStatement statement = null;

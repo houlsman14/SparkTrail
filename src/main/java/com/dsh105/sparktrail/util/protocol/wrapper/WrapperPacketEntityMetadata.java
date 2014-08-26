@@ -48,7 +48,6 @@
  * You should have received a copy of the GNU General Public License
  * along with HoloAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.dsh105.sparktrail.util.protocol.wrapper;
 
 import com.dsh105.sparktrail.util.protocol.Packet;
@@ -57,20 +56,20 @@ import com.dsh105.sparktrail.util.reflection.SafeMethod;
 
 public class WrapperPacketEntityMetadata extends Packet {
 
-    public WrapperPacketEntityMetadata() {
-        super(PacketFactory.PacketType.ENTITY_METADATA);
-    }
+      public WrapperPacketEntityMetadata() {
+            super(PacketFactory.PacketType.ENTITY_METADATA);
+      }
 
-    public void setEntityId(int value) {
-        this.write("a", value);
-    }
+      public void setEntityId(int value) {
+            this.write("a", value);
+      }
 
-    public int getEntityId() {
-        return (Integer) this.read("a");
-    }
+      public int getEntityId() {
+            return (Integer) this.read("a");
+      }
 
-    public void setMetadata(WrappedDataWatcher metadata) {
-        Object handle = metadata.getHandle();
-        this.write("b", new SafeMethod<Void>(handle.getClass(), "c").invoke(handle));
-    }
+      public void setMetadata(WrappedDataWatcher metadata) {
+            Object handle = metadata.getHandle();
+            this.write("b", new SafeMethod<Void>(handle.getClass(), "c").invoke(handle));
+      }
 }

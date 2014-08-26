@@ -66,7 +66,7 @@ public class EffectManager {
             while (i.hasNext()) {
                   EffectHolder e = i.next();
                   save(e);
-                  SQLEffectManager.instance.update(e);
+                  SQLEffectManager.instance.updateAsync(e);
                   e.stop();
                   i.remove();
             }
@@ -80,7 +80,7 @@ public class EffectManager {
             if (ConfigOptions.instance.useSql()) {
                   return;
             }
-            
+
             if (e.isPersistent()) {
                   clearFromFile(e);
                   if (e.getEffects().isEmpty()) {
@@ -90,10 +90,6 @@ public class EffectManager {
                   String path = "effects.";
                   if (e.getEffectType() == EffectHolder.EffectType.PLAYER) {
                         path = path + "player." + e.getDetails().playerName + ".";
-                  } else if (e.getEffectType() == EffectHolder.EffectType.LOCATION) {
-                        path = path + "location." + DataFactory.serialiseLocation(e.getLocation()) + ".";
-                  } else if (e.getEffectType() == EffectHolder.EffectType.MOB) {
-                        path = path + "mob." + e.getDetails().mobUuid + ".";
                   }
 
                   for (Effect effect : e.getEffects()) {
@@ -138,10 +134,6 @@ public class EffectManager {
                   String path = "effects.";
                   if (e.getEffectType() == EffectHolder.EffectType.PLAYER) {
                         path = path + "player." + e.getDetails().playerName;
-                  } else if (e.getEffectType() == EffectHolder.EffectType.LOCATION) {
-                        path = path + "location." + DataFactory.serialiseLocation(e.getLocation());
-                  } else if (e.getEffectType() == EffectHolder.EffectType.MOB) {
-                        path = path + "mob." + e.getDetails().mobUuid;
                   }
                   config.set(path, null);
                   config.saveConfig();
@@ -153,28 +145,8 @@ public class EffectManager {
             this.clearFromMemory(e);
       }
 
-      public EffectHolder createFromFile(Location location) {
-            YAMLConfig config = SparkTrailPlugin.getInstance().getConfig(SparkTrailPlugin.ConfigType.DATA);
-            String path = "effects.location." + DataFactory.serialiseLocation(location);
-            if (config.get(path) == null) {
-                  return null;
-            }
-            EffectHolder eh = EffectCreator.createLocHolder(location);
-            return createFromFile(path, eh);
-      }
-
-      public EffectHolder createFromFile(UUID uuid) {
-            YAMLConfig config = SparkTrailPlugin.getInstance().getConfig(SparkTrailPlugin.ConfigType.DATA);
-            String path = "effects.mob." + uuid;
-            if (config.get(path) == null) {
-                  return null;
-            }
-            EffectHolder eh = EffectCreator.createMobHolder(uuid);
-            return createFromFile(path, eh);
-      }
-
       public EffectHolder createFromFile(String playerName) {
-        //Player p = Bukkit.getPlayerExact(playerName);
+            //Player p = Bukkit.getPlayerExact(playerName);
         /*if (p == null) {
              return null;
              }*/
@@ -240,20 +212,17 @@ public class EffectManager {
                               } else if (pt == ParticleType.SWIRL) {
                                     try {
                                           UUID uuid = null;
-                                          if (eh.getEffectType().equals(EffectHolder.EffectType.MOB)) {
-                                                uuid = UUID.fromString(key);
-                                          } else if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
+                                          if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
                                                 Player p = Bukkit.getPlayerExact(key);
                                                 if (p == null) {
                                                       continue;
                                                 }
                                                 uuid = p.getUniqueId();
                                           }
-                                          if (eh.getEffectType().equals(EffectHolder.EffectType.LOCATION) || uuid == null) {
+                                          if (uuid == null) {
                                                 continue;
                                           }
                                           pd.swirlType = Swirl.SwirlType.valueOf(value);
-                                          pd.setMob(uuid);
                                     } catch (Exception e) {
                                           Logger.log(Logger.LogLevel.WARNING, "Error creating Effect (" + key + "). Either SparkTrail didn't save properly or the data file was edited.", true);
                                           return null;
@@ -293,18 +262,19 @@ public class EffectManager {
             return null;
       }
 
-      public EffectHolder getEffect(UUID mobUuid) {
-            for (EffectHolder e : effects) {
-                  if (e.getDetails().mobUuid != null && e.getDetails().mobUuid == mobUuid) {
-                        return e;
-                  }
-            }
-            return null;
-      }
-
-      public void remove(EffectHolder e) {
+      public void remove(final EffectHolder e) {
             save(e);
-            SQLEffectManager.instance.update(e);
-            this.clearFromMemory(e);
+
+            SparkTrailPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(SparkTrailPlugin.getInstance(), new Runnable() {
+                  public void run() {
+                        SQLEffectManager.instance.updateAsync(e);
+
+                        SparkTrailPlugin.getInstance().getServer().getScheduler().runTask(SparkTrailPlugin.getInstance(), new Runnable() {
+                              public void run() {
+                                    clearFromMemory(e);
+                              }
+                        });
+                  }
+            });
       }
 }

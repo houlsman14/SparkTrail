@@ -24,6 +24,7 @@ import com.dsh105.sparktrail.trail.type.ItemSpray;
 import com.dsh105.sparktrail.util.Lang;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -33,7 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
 
-      @EventHandler
+      @EventHandler(priority= EventPriority.MONITOR)
       public void onQuit(PlayerQuitEvent event) {
             Player p = event.getPlayer();
             EffectHolder eh = EffectManager.getInstance().getEffect(p.getName());
@@ -42,7 +43,7 @@ public class PlayerListener implements Listener {
             }
       }
 
-      @EventHandler
+      @EventHandler(priority= EventPriority.MONITOR)
       public void onLogin(PlayerJoinEvent event) {
             final Player p = event.getPlayer();
             if (ConfigOptions.instance.useSql()) {
@@ -54,7 +55,7 @@ public class PlayerListener implements Listener {
                                     Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
                               }
                         }
-                  }.runTaskAsynchronously(SparkTrailPlugin.getInstance());
+                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 20L);
                   return;
             }
             new BukkitRunnable() {
@@ -70,7 +71,7 @@ public class PlayerListener implements Listener {
             }.runTask(SparkTrailPlugin.getInstance());
       }
 
-      @EventHandler
+      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
       public void onInventoryPickup(InventoryPickupItemEvent event) {
             if (event.getInventory().getType() == InventoryType.HOPPER) {
                   if (ItemSpray.UUID_LIST.contains(event.getItem().getUniqueId())) {

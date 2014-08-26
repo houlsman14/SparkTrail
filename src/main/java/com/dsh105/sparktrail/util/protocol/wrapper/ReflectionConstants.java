@@ -91,9 +91,9 @@ public enum ReflectionConstants {
       }
 
       public String getName() {
-        // If the mapped versions only contains one, we can use that
+            // If the mapped versions only contains one, we can use that
             // If there's more, but the mapped version isn't specifically supported, use the mappings of the latest supported version
-            String[] valueArray =  this.vanilla;
+            String[] valueArray = this.vanilla;
             int vIndex = this.versionIndex;
             return (vIndex < 0 || valueArray.length == 1) ? valueArray[0] : (vIndex >= valueArray.length) ? valueArray[valueArray.length - 1] : valueArray[vIndex];
       }

@@ -31,8 +31,6 @@ import com.dsh105.sparktrail.command.TrailCommand;
 import com.dsh105.sparktrail.config.ConfigOptions;
 import com.dsh105.sparktrail.data.AutoSave;
 import com.dsh105.sparktrail.data.EffectManager;
-import com.dsh105.sparktrail.listeners.EntityListener;
-import com.dsh105.sparktrail.listeners.InteractListener;
 import com.dsh105.sparktrail.listeners.PlayerListener;
 import com.dsh105.sparktrail.menu.MenuListener;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
@@ -193,18 +191,6 @@ public class SparkTrailPlugin extends DSHPlugin {
                                       + "Effects varchar(255),"
                                       + "PRIMARY KEY (PlayerName)"
                                       + ");");
-
-                              statement.executeUpdate("CREATE TABLE IF NOT EXISTS LocationEffects ("
-                                      + "Location varchar(255),"
-                                      + "Effects varchar(255),"
-                                      + "PRIMARY KEY (Location)"
-                                      + ");");
-
-                              statement.executeUpdate("CREATE TABLE IF NOT EXISTS MobEffects ("
-                                      + "MobUUID varchar(255),"
-                                      + "Effects varchar(255),"
-                                      + "PRIMARY KEY (MobUUID)"
-                                      + ");");
                         } catch (SQLException e) {
                               Logger.log(Logger.LogLevel.SEVERE, "MySQL DataBase Table initiation has failed.", e, true);
                         }
@@ -215,7 +201,7 @@ public class SparkTrailPlugin extends DSHPlugin {
                   this.AS = new AutoSave(this.config.getInt("autosaveTimer", 180));
             }
 
-        // Register custom commands
+            // Register custom commands
             // Command string based off the string defined in config.yml
             try {
                   Class craftServer = Class.forName("org.bukkit.craftbukkit." + VersionUtil.getServerVersion() + ".CraftServer");
@@ -242,8 +228,6 @@ public class SparkTrailPlugin extends DSHPlugin {
             manager.registerEvents(new MenuListener(), this);
             manager.registerEvents(new MenuChatListener(), this);
             manager.registerEvents(new PlayerListener(), this);
-            manager.registerEvents(new InteractListener(), this);
-            manager.registerEvents(new EntityListener(), this);
 
             try {
                   Metrics metrics = new Metrics(this);
