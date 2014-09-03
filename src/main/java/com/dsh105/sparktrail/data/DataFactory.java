@@ -170,7 +170,7 @@ public class DataFactory {
                                     } else if (pt == ParticleType.BLOCKBREAK) {
                                           builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
                                     } else if (pt == ParticleType.ITEMSPRAY) {
-                                          builder.append(((ItemSpray) e).idValue).append("-").append(((BlockBreak) e).metaValue);
+                                          builder.append(((ItemSpray) e).idValue).append("-").append(((ItemSpray) e).metaValue);
                                     } else if (pt == ParticleType.POTION) {
                                           builder.append(((Potion) e).potionType.toString());
                                     } else if (pt == ParticleType.SMOKE) {
