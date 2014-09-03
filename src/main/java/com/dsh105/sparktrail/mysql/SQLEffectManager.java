@@ -74,10 +74,10 @@ public class SQLEffectManager {
                   Connection con = null;
                   PreparedStatement statement = null;
 
-                  if (eh.getEffects().size() <= 0) {
+                  if (eh == null || eh.getDetails() == null || eh.getDetails().playerName == null) {
                         return;
                   }
-
+                  
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
                               SparkTrailPlugin.getInstance().SQLH.createData(eh.getDetails().playerName);

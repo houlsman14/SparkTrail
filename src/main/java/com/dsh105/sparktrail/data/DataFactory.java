@@ -16,10 +16,8 @@
  */
 package com.dsh105.sparktrail.data;
 
-import com.dsh105.dshutils.logger.ConsoleLogger;
 import com.dsh105.dshutils.util.EnumUtil;
 import com.dsh105.dshutils.util.StringUtil;
-import com.dsh105.sparktrail.SparkTrailPlugin;
 import com.dsh105.sparktrail.chat.BlockData;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.trail.ParticleDetails;
@@ -28,13 +26,7 @@ import com.dsh105.sparktrail.trail.type.*;
 import com.dsh105.sparktrail.trail.type.Sound;
 import com.dsh105.sparktrail.util.FireworkColour;
 import com.dsh105.sparktrail.util.FireworkType;
-import com.dsh105.sparktrail.util.Lang;
 import org.bukkit.*;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
 import java.util.*;
 
 public class DataFactory {
@@ -164,28 +156,37 @@ public class DataFactory {
                   builder.append(s);
                   if (includeData) {
                         ParticleType pt = e.getParticleType();
-                        if (e.getParticleType().requiresDataMenu()) {
-                              builder.append(";");
-                              if (pt == ParticleType.CRITICAL) {
-                                    builder.append(((Critical) e).criticalType.toString());
-                              } else if (pt == ParticleType.FIREWORK) {
-                                    builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
-                              } else if (pt == ParticleType.BLOCKBREAK) {
-                                    builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
-                              } else if (pt == ParticleType.ITEMSPRAY) {
-                                    builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
-                              } else if (pt == ParticleType.POTION) {
-                                    builder.append(((Potion) e).potionType.toString());
-                              } else if (pt == ParticleType.SMOKE) {
-                                    builder.append(((Smoke) e).smokeType.toString());
-                              } else if (pt == ParticleType.SWIRL) {
-                                    builder.append(((Swirl) e).swirlType.toString());
-                              } else if (pt == ParticleType.SOUND) {
-                                    builder.append(((Sound) e).sound.toString());
+                        if (e == null || pt == null) {
+                              continue;
+                        }
+
+                        try {
+                              if (e.getParticleType().requiresDataMenu()) {
+                                    builder.append(";");
+                                    if (pt == ParticleType.CRITICAL) {
+                                          builder.append(((Critical) e).criticalType.toString());
+                                    } else if (pt == ParticleType.FIREWORK) {
+                                          builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
+                                    } else if (pt == ParticleType.BLOCKBREAK) {
+                                          builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
+                                    } else if (pt == ParticleType.ITEMSPRAY) {
+                                          builder.append(((ItemSpray) e).idValue).append("-").append(((BlockBreak) e).metaValue);
+                                    } else if (pt == ParticleType.POTION) {
+                                          builder.append(((Potion) e).potionType.toString());
+                                    } else if (pt == ParticleType.SMOKE) {
+                                          builder.append(((Smoke) e).smokeType.toString());
+                                    } else if (pt == ParticleType.SWIRL) {
+                                          builder.append(((Swirl) e).swirlType.toString());
+                                    } else if (pt == ParticleType.SOUND) {
+                                          builder.append(((Sound) e).sound.toString());
+                                    }
                               }
+                        } catch (Exception exception) {
+                              exception.printStackTrace();
+                              continue;
                         }
                   }
-                  builder.append("," + (includeSpace ? " " : ""));
+                  builder.append(",").append(includeSpace ? " " : "");
             }
             return builder.toString();
       }

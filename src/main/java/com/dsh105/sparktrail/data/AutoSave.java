@@ -17,6 +17,7 @@
 package com.dsh105.sparktrail.data;
 
 import com.dsh105.sparktrail.SparkTrailPlugin;
+import com.dsh105.sparktrail.mysql.SQLEffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,7 +29,7 @@ public class AutoSave {
                         SparkTrailPlugin plugin = SparkTrailPlugin.getInstance();
                         for (EffectHolder e : plugin.EH.getEffectHolders()) {
                               plugin.EH.save(e);
-                              plugin.SQLH.updateAsync(e);
+                              SQLEffectManager.instance.updateAsync(e);
                         }
                   }
             }.runTaskTimerAsynchronously(SparkTrailPlugin.getInstance(), (20 * timer) / 2, 20 * timer);
