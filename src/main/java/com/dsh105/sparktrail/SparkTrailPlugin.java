@@ -240,7 +240,6 @@ public class SparkTrailPlugin extends DSHPlugin {
             if (this.EH != null) {
                   this.EH.clearEffects();
             }
-            super.onDisable();
       }
 
       public static SparkTrailPlugin getInstance() {

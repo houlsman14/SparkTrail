@@ -95,9 +95,8 @@ public class ItemSpray extends Effect {
 
             public void executeFinish(boolean removeFromLists) {
                   if (this.item != null && !this.item.isDead()) {
-                        this.item.remove();
-
                         this.item.removeMetadata("ItemSprayItem", SparkTrailPlugin.getInstance());
+                        this.item.remove();
                   }
                   if (removeFromLists) {
                         TASKS.remove(this);
