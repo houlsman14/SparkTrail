@@ -124,7 +124,9 @@ public abstract class Effect {
       public abstract void playDemo(Player p);
 
       public void stop() {
-            this.task.cancel();
+            if (this.task != null) {
+                  this.task.cancel();
+            }
       }
 
       public ParticleType getParticleType() {

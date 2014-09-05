@@ -99,7 +99,7 @@ public class EffectCreator {
                         Logger.log(Logger.LogLevel.WARNING, "Encountered Class Cast error initiating Trail effect (" + particleType.toString() + ").", true);
                         return null;
                   }
-                  e = new Swirl(effectHolder, (Swirl.SwirlType) o[0], (UUID) o[1]);
+                  e = new Swirl(effectHolder, (Swirl.SwirlType) o[0]);
             } else if (particleType == ParticleType.SOUND) {
                   if (!checkArray(o, new Class[]{org.bukkit.Sound.class})) {
                         Logger.log(Logger.LogLevel.WARNING, "Encountered Class Cast error initiating Trail effect (" + particleType.toString() + ").", true);
@@ -114,7 +114,7 @@ public class EffectCreator {
       }
 
       private static boolean checkArray(Object[] o1, Class[] classes) {
-            for (int i = 0; i < o1.length; i++) {
+            for (int i = 0; i < (o1.length - 1); i++) {
                   if (!(o1[i].getClass().equals(classes[i]))) {
                         return false;
                   }

@@ -95,16 +95,6 @@ public class SparkTrailPlugin extends DSHPlugin {
             PluginManager manager = getServer().getPluginManager();
             Logger.initiate(this, "SparkTrail", "[SparkTrail]");
 
-            /*if (!VersionUtil.compareVersions()) {
-             ConsoleLogger.log(Logger.LogLevel.NORMAL, ChatColor.GREEN + "SparkTrail " + ChatColor.YELLOW
-             + this.getDescription().getVersion() + ChatColor.GREEN
-             + " is only compatible with:");
-             ConsoleLogger.log(Logger.LogLevel.NORMAL, ChatColor.YELLOW + "    " + VersionUtil.getMinecraftVersion() + "-" + VersionUtil.getCraftBukkitVersion() + ".");
-             ConsoleLogger.log(Logger.LogLevel.NORMAL, ChatColor.GREEN + "Initialisation failed. Please update the plugin.");
-
-             manager.disablePlugin(this);
-             return;
-             }*/
             this.api = new SparkTrailAPI();
 
             String[] header = {"SparkTrail By DSH105", "---------------------",

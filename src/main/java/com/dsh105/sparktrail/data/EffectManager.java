@@ -66,7 +66,7 @@ public class EffectManager {
             while (i.hasNext()) {
                   EffectHolder e = i.next();
                   save(e);
-                  SQLEffectManager.instance.updateAsync(e);
+                  SQLEffectManager.instance.updateAsync(e.getDetails().playerName, e);
                   e.stop();
                   i.remove();
             }
@@ -77,6 +77,10 @@ public class EffectManager {
       }
 
       public void save(EffectHolder e) {
+            if (e == null) {
+                  return;
+            }
+
             if (ConfigOptions.instance.useSql()) {
                   return;
             }
@@ -142,7 +146,7 @@ public class EffectManager {
 
       public void clear(EffectHolder e) {
             clearFromFile(e);
-            this.clearFromMemory(e);
+            clearFromMemory(e);
       }
 
       public EffectHolder createFromFile(String playerName) {
@@ -262,12 +266,12 @@ public class EffectManager {
             return null;
       }
 
-      public void remove(final EffectHolder e) {
+      public void remove(final String player_name, final EffectHolder e) {
             save(e);
 
             SparkTrailPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(SparkTrailPlugin.getInstance(), new Runnable() {
                   public void run() {
-                        SQLEffectManager.instance.updateAsync(e);
+                        SQLEffectManager.instance.updateAsync(player_name, e);
 
                         SparkTrailPlugin.getInstance().getServer().getScheduler().runTask(SparkTrailPlugin.getInstance(), new Runnable() {
                               public void run() {

@@ -91,7 +91,7 @@ public class ParticleMenu extends Menu {
                                     Lang.sendTo(this.getViewer(), Lang.NO_ACTIVE_EFFECTS.toString());
                                     return;
                               }
-                              EffectManager.getInstance().remove(eh);
+                              EffectManager.getInstance().remove(eh.getDetails().playerName, eh);
                               Lang.sendTo(this.getViewer(), Lang.EFFECTS_STOPPED.toString());
                         }
                   },

@@ -22,28 +22,33 @@ import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.trail.type.ItemSpray;
 import com.dsh105.sparktrail.util.Lang;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
 
-      @EventHandler(priority= EventPriority.MONITOR)
+      @EventHandler(priority = EventPriority.MONITOR)
       public void onQuit(PlayerQuitEvent event) {
             Player p = event.getPlayer();
             EffectHolder eh = EffectManager.getInstance().getEffect(p.getName());
-            if (eh != null) {
-                  EffectManager.getInstance().remove(eh);
-            }
+
+            EffectManager.getInstance().remove(p.getName(), eh);
+
       }
 
-      @EventHandler(priority= EventPriority.MONITOR)
+      @EventHandler(priority = EventPriority.MONITOR)
       public void onLogin(PlayerJoinEvent event) {
             final Player p = event.getPlayer();
             if (ConfigOptions.instance.useSql()) {
@@ -56,7 +61,7 @@ public class PlayerListener implements Listener {
                               }
                         }
                         //Later on.
-                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 100L);
+                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 60L);
                   return;
             }
             new BukkitRunnable() {
@@ -74,9 +79,48 @@ public class PlayerListener implements Listener {
 
       @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
       public void onInventoryPickup(InventoryPickupItemEvent event) {
+            if (event.getItem().hasMetadata("ItemSprayItem")) {
+                  event.setCancelled(true);
+                  return;
+            }
+
             if (event.getInventory().getType() == InventoryType.HOPPER) {
                   if (ItemSpray.UUID_LIST.contains(event.getItem().getUniqueId())) {
                         event.setCancelled(true);
+                  }
+            }
+      }
+
+      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+      public void onPlayerPickup(PlayerPickupItemEvent event) {
+            if (event.getItem().hasMetadata("ItemSprayItem")) {
+                  event.setCancelled(true);
+                  return;
+            }
+      }
+
+      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+      public void onPortalPickup(EntityPortalEnterEvent event) {
+            if (event.getEntity().hasMetadata("ItemSprayItem")) {
+                  event.getEntity().remove();
+                  return;
+            }
+      }
+
+      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+      public void onUnload(ChunkUnloadEvent event) {
+            for (Entity entity : event.getChunk().getEntities()) {
+                  if (entity.hasMetadata("ItemSprayItem")) {
+                        entity.remove();
+                  }
+            }
+      }
+
+      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+      public void onLoad(ChunkLoadEvent event) {
+            for (Entity entity : event.getChunk().getEntities()) {
+                  if (entity.hasMetadata("ItemSprayItem")) {
+                        entity.remove();
                   }
             }
       }

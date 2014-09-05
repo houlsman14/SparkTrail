@@ -22,11 +22,11 @@ import com.dsh105.sparktrail.data.DataFactory;
 import com.dsh105.sparktrail.data.EffectCreator;
 import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import lombok.Cleanup;
 
 public class SQLEffectManager {
 
@@ -38,75 +38,46 @@ public class SQLEffectManager {
 
       private void createData(String playerName) {
             if (ConfigOptions.instance.useSql()) {
-                  Connection con = null;
-                  PreparedStatement statement = null;
-
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
-                              con = SparkTrailPlugin.getInstance().dbPool.getConnection();
-
-                              statement = con.prepareStatement("INSERT INTO PlayerEffects (PlayerName, Effects) VALUES (?, ?);");
+                              Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
+                              @Cleanup
+                              PreparedStatement statement = con.prepareStatement("INSERT INTO PlayerEffects (PlayerName, Effects) VALUES (?, ?);");
                               statement.setString(1, playerName);
-
-                              if (statement != null) {
-                                    statement.setString(2, "");
-                                    statement.executeUpdate();
-                              }
-
+                              statement.setString(2, "");
+                              statement.executeUpdate();
                         } catch (SQLException e) {
-                        } finally {
-                              try {
-                                    if (statement != null) {
-                                          statement.close();
-                                    }
-                                    if (con != null) {
-                                          con.close();
-                                    }
-                              } catch (SQLException ignored) {
-                              }
                         }
                   }
             }
       }
 
-      public void updateAsync(EffectHolder eh) {
+      public void updateAsync(String player_name, EffectHolder eh) {
             if (ConfigOptions.instance.useSql()) {
-                  Connection con = null;
-                  PreparedStatement statement = null;
-
-                  if (eh == null || eh.getDetails() == null || eh.getDetails().playerName == null) {
-                        return;
-                  }
-                  
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
-                              SparkTrailPlugin.getInstance().SQLH.createData(eh.getDetails().playerName);
-
-                              con = SparkTrailPlugin.getInstance().dbPool.getConnection();
-                              String data = DataFactory.serialiseEffects(eh.getEffects(), false, false, true);
-
-                              if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
-                                    statement = con.prepareStatement("UPDATE PlayerEffects SET Effects = ? WHERE PlayerName = ?");
-                                    statement.setString(2, eh.getDetails().playerName);
+                              createData(player_name);
+                              if (eh == null || eh.getEffects() == null || eh.getEffects().isEmpty()) {
+                                    Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
+                                    @Cleanup
+                                    PreparedStatement statement = con.prepareStatement("UPDATE PlayerEffects SET Effects = ? WHERE PlayerName = ?");
+                                    statement.setString(2, player_name);
+                                    statement.setString(1, "");
+                                    statement.executeUpdate();
+                                    return;
                               }
 
-                              if (statement != null) {
+                              if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
+                                    Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
+                                    String data = DataFactory.serialiseEffects(eh.getEffects(), false, false, true);
+                                    @Cleanup
+                                    PreparedStatement statement = con.prepareStatement("UPDATE PlayerEffects SET Effects = ? WHERE PlayerName = ?");
+                                    statement.setString(2, eh.getDetails().playerName);
                                     statement.setString(1, data);
                                     statement.executeUpdate();
                               }
-
                         } catch (SQLException e) {
                               e.printStackTrace();
-                        } finally {
-                              try {
-                                    if (statement != null) {
-                                          statement.close();
-                                    }
-                                    if (con != null) {
-                                          con.close();
-                                    }
-                              } catch (SQLException ignored) {
-                              }
                         }
                   }
             }
@@ -114,13 +85,11 @@ public class SQLEffectManager {
 
       public EffectHolder load(String playerName) {
             if (ConfigOptions.instance.useSql()) {
-                  Connection con = null;
-                  PreparedStatement statement = null;
-
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
-                              con = SparkTrailPlugin.getInstance().dbPool.getConnection();
-                              statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
+                              Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
+                              @Cleanup
+                              PreparedStatement statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
                               statement.setString(1, playerName);
                               ResultSet rs = statement.executeQuery();
                               while (rs.next()) {
@@ -129,19 +98,8 @@ public class SQLEffectManager {
                                     String effects = rs.getString("Effects");
                                     DataFactory.addEffectsFrom(effects, eh);
                               }
-
                         } catch (SQLException e) {
                               e.printStackTrace();
-                        } finally {
-                              try {
-                                    if (statement != null) {
-                                          statement.close();
-                                    }
-                                    if (con != null) {
-                                          con.close();
-                                    }
-                              } catch (SQLException ignored) {
-                              }
                         }
                   }
             }

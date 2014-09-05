@@ -257,12 +257,12 @@ public class EffectHolder extends BukkitRunnable {
                   Player p = Bukkit.getPlayerExact(this.details.playerName);
                   if (p == null) {
                         //Logger.log(Logger.LogLevel.WARNING, "Encountered missing player (Name: " + this.details.playerName + "). Removing particle effect.", true);
-                        EffectManager.getInstance().remove(this);
+                        EffectManager.getInstance().remove(this.details.playerName, this);
                         return false;
                   }
                   Location l = p.getLocation();
                   if (l == null) {
-                        EffectManager.getInstance().remove(this);
+                        EffectManager.getInstance().remove(this.details.playerName, this);
                         return false;
                   }
                   if (this.world == null || !this.world.equals(l.getWorld())) {
@@ -291,12 +291,16 @@ public class EffectHolder extends BukkitRunnable {
 
       public void stop() {
             this.task.cancel();
+
+            for (Effect effect : this.effects) {
+                  effect.stop();
+            }
       }
 
       public void run() {
             if (this.timeout > 0) {
                   if (++this.timeoutTicks > this.timeout) {
-                        EffectManager.getInstance().remove(this);
+                        EffectManager.getInstance().remove(this.details.playerName, this);
                   }
             }
             if (!this.effects.isEmpty()) {

@@ -20,14 +20,15 @@ import com.dsh105.sparktrail.SparkTrailPlugin;
 import com.dsh105.sparktrail.trail.Effect;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.trail.ParticleType;
+import java.util.ArrayList;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class ItemSpray extends Effect {
 
@@ -50,6 +51,12 @@ public class ItemSpray extends Effect {
                   for (Location l : this.displayType.getLocations(this.getHolder().getEffectPlayLocation())) {
                         for (int i = 1; i <= 5; i++) {
                               Item item = this.getWorld().dropItemNaturally(l, new ItemStack(this.idValue, 1, (short) this.metaValue));
+                              ItemMeta meta = item.getItemStack().getItemMeta();
+                              meta.setDisplayName(UUID.randomUUID().toString());
+                              item.getItemStack().setItemMeta(meta);
+
+                              item.setMetadata("ItemSprayItem", new FixedMetadataValue(SparkTrailPlugin.getInstance(), "ItemSprayItem"));
+
                               item.setVelocity(item.getVelocity().normalize().multiply(0.4F));
                               item.setPickupDelay(Integer.MAX_VALUE);
                               new ItemSprayRemoveTask(item);
@@ -89,6 +96,8 @@ public class ItemSpray extends Effect {
             public void executeFinish(boolean removeFromLists) {
                   if (this.item != null && !this.item.isDead()) {
                         this.item.remove();
+
+                        this.item.removeMetadata("ItemSprayItem", SparkTrailPlugin.getInstance());
                   }
                   if (removeFromLists) {
                         TASKS.remove(this);

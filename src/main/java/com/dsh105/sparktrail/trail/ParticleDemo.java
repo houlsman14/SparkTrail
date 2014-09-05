@@ -73,7 +73,7 @@ public class ParticleDemo extends BukkitRunnable {
                         Smoke s = new Smoke(null, Smoke.SmokeType.BLACK);
                         s.playDemo(this.viewer);
                   } else if (pt == ParticleType.SWIRL) {
-                        Swirl s = new Swirl(null, Swirl.SwirlType.WHITE, this.viewer.getUniqueId());
+                        Swirl s = new Swirl(null, Swirl.SwirlType.WHITE);
                         s.playDemo(this.viewer);
                   } else {
                         Effect e = pt.getEffectInstance(null);

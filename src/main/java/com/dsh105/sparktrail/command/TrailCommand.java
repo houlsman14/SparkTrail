@@ -195,7 +195,7 @@ public class TrailCommand implements CommandExecutor {
                                     Lang.sendTo(sender, Lang.NO_ACTIVE_EFFECTS.toString());
                                     return true;
                               }
-                              EffectManager.getInstance().remove(eh);
+                              EffectManager.getInstance().remove(eh.getDetails().playerName, eh);
                               Lang.sendTo(sender, Lang.EFFECTS_STOPPED.toString());
                               return true;
                         } else {
@@ -539,7 +539,7 @@ public class TrailCommand implements CommandExecutor {
                                           Lang.sendTo(sender, Lang.PLAYER_NO_ACTIVE_EFFECTS.toString().replace("%player%", args[1]));
                                           return true;
                                     }
-                                    EffectManager.getInstance().remove(eh);
+                                    EffectManager.getInstance().remove(eh.getDetails().playerName, eh);
                                     Lang.sendTo(sender, Lang.PLAYER_EFFECTS_STOPPED.toString().replace("%player%", target.getName()));
                                     return true;
                               } else {

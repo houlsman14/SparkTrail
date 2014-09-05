@@ -162,6 +162,7 @@ public enum ParticleType {
             } else {
                   list.add(s);
             }
+
             for (String str : list) {
                   if (this == CRITICAL) {
                         if (EnumUtil.isEnumType(Critical.CriticalType.class, str.toUpperCase())) {
@@ -197,6 +198,6 @@ public enum ParticleType {
                         }
                   }
             }
-            return null;
+            return set;
       }
 }

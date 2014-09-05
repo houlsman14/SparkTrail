@@ -156,38 +156,30 @@ public class DataFactory {
                   builder.append(s);
                   if (includeData) {
                         ParticleType pt = e.getParticleType();
-                        if (e == null || pt == null) {
-                              continue;
-                        }
-
-                        try {
-                              if (e.getParticleType().requiresDataMenu()) {
-                                    builder.append(";");
-                                    if (pt == ParticleType.CRITICAL) {
-                                          builder.append(((Critical) e).criticalType.toString());
-                                    } else if (pt == ParticleType.FIREWORK) {
-                                          builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
-                                    } else if (pt == ParticleType.BLOCKBREAK) {
-                                          builder.append(((BlockBreak) e).idValue).append("-").append(((BlockBreak) e).metaValue);
-                                    } else if (pt == ParticleType.ITEMSPRAY) {
-                                          builder.append(((ItemSpray) e).idValue).append("-").append(((ItemSpray) e).metaValue);
-                                    } else if (pt == ParticleType.POTION) {
-                                          builder.append(((Potion) e).potionType.toString());
-                                    } else if (pt == ParticleType.SMOKE) {
-                                          builder.append(((Smoke) e).smokeType.toString());
-                                    } else if (pt == ParticleType.SWIRL) {
-                                          builder.append(((Swirl) e).swirlType.toString());
-                                    } else if (pt == ParticleType.SOUND) {
-                                          builder.append(((Sound) e).sound.toString());
-                                    }
+                        if (e.getParticleType().requiresDataMenu()) {
+                              builder.append(";");
+                              if (pt == ParticleType.CRITICAL) {
+                                    builder.append(((Critical) e).criticalType.toString());
+                              } else if (pt == ParticleType.FIREWORK) {
+                                    builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
+                              } else if (pt == ParticleType.BLOCKBREAK) {
+                                    builder.append(((BlockBreak) e).idValue + "-" + ((BlockBreak) e).metaValue);
+                              } else if (pt == ParticleType.ITEMSPRAY) {
+                                    builder.append(((ItemSpray) e).idValue + "-" + ((ItemSpray) e).metaValue);
+                              } else if (pt == ParticleType.POTION) {
+                                    builder.append(((Potion) e).potionType.toString());
+                              } else if (pt == ParticleType.SMOKE) {
+                                    builder.append(((Smoke) e).smokeType.toString());
+                              } else if (pt == ParticleType.SWIRL) {
+                                    builder.append(((Swirl) e).swirlType.toString());
+                              } else if (pt == ParticleType.SOUND) {
+                                    builder.append(((Sound) e).sound.toString());
                               }
-                        } catch (Exception exception) {
-                              exception.printStackTrace();
-                              continue;
                         }
                   }
                   builder.append(",").append(includeSpace ? " " : "");
             }
+            // builder.deleteCharAt(builder.length() - 2);
             return builder.toString();
       }
 

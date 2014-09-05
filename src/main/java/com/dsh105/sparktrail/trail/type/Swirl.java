@@ -25,7 +25,6 @@ import com.dsh105.sparktrail.util.ParticleUtil;
 import com.dsh105.sparktrail.util.protocol.wrapper.WrappedDataWatcher;
 import com.dsh105.sparktrail.util.protocol.wrapper.WrapperPacketEntityMetadata;
 import com.dsh105.sparktrail.util.protocol.wrapper.WrapperPacketWorldParticles;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -35,29 +34,18 @@ import org.bukkit.util.Vector;
 public class Swirl extends Effect {
 
       public SwirlType swirlType;
-      public UUID uuid;
 
-      public Swirl(EffectHolder effectHolder, SwirlType swirlType, UUID entityUuid) {
+      public Swirl(EffectHolder effectHolder, SwirlType swirlType) {
             super(effectHolder, ParticleType.SWIRL);
             this.swirlType = swirlType;
-            this.uuid = entityUuid;
       }
 
       @Override
       public boolean play() {
             boolean shouldPlay = super.play();
             if (shouldPlay) {
-                  Entity entity = null;
-                  if (this.getEffectType() == EffectHolder.EffectType.PLAYER) {
-                        Player p = Bukkit.getPlayerExact(this.getHolder().getDetails().playerName);
-                        entity = p;
-                  } else {
-                        for (Entity e : getWorld().getEntities()) {
-                              if (e.getUniqueId() == this.uuid) {
-                                    entity = e;
-                              }
-                        }
-                  }
+                  Entity entity = Bukkit.getPlayerExact(this.getHolder().getDetails().playerName);
+
                   if (entity != null) {
                         WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity) entity).getHandle());
                         dataWatcher.watch(7, this.swirlType.getValue());
@@ -67,6 +55,7 @@ public class Swirl extends Effect {
                         for (Player p : GeometryUtil.getNearbyPlayers(entity.getLocation(), 50)) {
                               meta.send(p);
                         }
+                        meta.send(Bukkit.getPlayerExact(this.getHolder().getDetails().playerName));
                   } else {
                         Logger.log(Logger.LogLevel.SEVERE, "Failed to find correct Entity from UUID (Swirl Effect).", false);
                   }
@@ -81,12 +70,8 @@ public class Swirl extends Effect {
       @Override
       public void stop() {
             super.stop();
-            Entity entity = null;
-            for (Entity e : getWorld().getEntities()) {
-                  if (e.getUniqueId() == this.uuid) {
-                        entity = e;
-                  }
-            }
+
+            Entity entity = Bukkit.getPlayerExact(this.getHolder().getDetails().playerName);
             if (entity != null) {
                   WrappedDataWatcher dataWatcher = new WrappedDataWatcher(((CraftEntity) entity).getHandle());
                   dataWatcher.watch(7, 0);
@@ -96,6 +81,7 @@ public class Swirl extends Effect {
                   for (Player p : GeometryUtil.getNearbyPlayers(entity.getLocation(), 50)) {
                         meta.send(p);
                   }
+                  meta.send(Bukkit.getPlayerExact(this.getHolder().getDetails().playerName));
             } else {
                   Logger.log(Logger.LogLevel.SEVERE, "Failed to find correct Entity from UUID (Swirl Effect).", false);
             }
