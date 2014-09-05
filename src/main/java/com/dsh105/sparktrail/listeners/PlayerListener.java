@@ -116,7 +116,7 @@ public class PlayerListener implements Listener {
             }
       }
 
-      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+      @EventHandler(priority = EventPriority.MONITOR)
       public void onLoad(ChunkLoadEvent event) {
             for (Entity entity : event.getChunk().getEntities()) {
                   if (entity.hasMetadata("ItemSprayItem")) {

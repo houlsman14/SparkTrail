@@ -39,14 +39,6 @@ import com.dsh105.sparktrail.util.Lang;
 import com.dsh105.sparktrail.util.Permission;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -54,6 +46,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
 
 public class SparkTrailPlugin extends DSHPlugin {
 
@@ -230,12 +232,18 @@ public class SparkTrailPlugin extends DSHPlugin {
       }
 
       public void onDisable() {
-            Iterator<ItemSpray.ItemSprayRemoveTask> i = ItemSpray.TASKS.iterator();
-            while (i.hasNext()) {
-                  ItemSpray.ItemSprayRemoveTask task = i.next();
-                  task.executeFinish(false);
-                  i.remove();
+            //Handle old itemspray items.
+            for (World world : getServer().getWorlds()) {
+                  for (Chunk chunk : world.getLoadedChunks()) {
+                        for (Entity entity : chunk.getEntities()) {
+                              if (entity.hasMetadata("ItemSprayItem")) {
+                                    entity.remove();
+                              }
+                        }
+                        chunk.unload(true, true);
+                  }
             }
+
             this.getServer().getScheduler().cancelTasks(this);
             if (this.EH != null) {
                   this.EH.clearEffects();
