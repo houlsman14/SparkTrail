@@ -20,7 +20,6 @@ import com.dsh105.sparktrail.SparkTrailPlugin;
 import com.dsh105.sparktrail.config.ConfigOptions;
 import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
-import com.dsh105.sparktrail.trail.type.ItemSpray;
 import com.dsh105.sparktrail.util.Lang;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -75,53 +74,5 @@ public class PlayerListener implements Listener {
                         }
                   }
             }.runTask(SparkTrailPlugin.getInstance());
-      }
-
-      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-      public void onInventoryPickup(InventoryPickupItemEvent event) {
-            if (event.getItem().hasMetadata("ItemSprayItem")) {
-                  event.setCancelled(true);
-                  return;
-            }
-
-            if (event.getInventory().getType() == InventoryType.HOPPER) {
-                  if (ItemSpray.UUID_LIST.contains(event.getItem().getUniqueId())) {
-                        event.setCancelled(true);
-                  }
-            }
-      }
-
-      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-      public void onPlayerPickup(PlayerPickupItemEvent event) {
-            if (event.getItem().hasMetadata("ItemSprayItem")) {
-                  event.setCancelled(true);
-                  return;
-            }
-      }
-
-      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-      public void onPortalPickup(EntityPortalEnterEvent event) {
-            if (event.getEntity().hasMetadata("ItemSprayItem")) {
-                  event.getEntity().remove();
-                  return;
-            }
-      }
-
-      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-      public void onUnload(ChunkUnloadEvent event) {
-            for (Entity entity : event.getChunk().getEntities()) {
-                  if (entity.hasMetadata("ItemSprayItem")) {
-                        entity.remove();
-                  }
-            }
-      }
-
-      @EventHandler(priority = EventPriority.MONITOR)
-      public void onLoad(ChunkLoadEvent event) {
-            for (Entity entity : event.getChunk().getEntities()) {
-                  if (entity.hasMetadata("ItemSprayItem")) {
-                        entity.remove();
-                  }
-            }
       }
 }

@@ -84,7 +84,7 @@ public class TrailCommand implements CommandExecutor {
                         return true;
                   }
 
-            } else if (args.length == 1 || (args.length >= 2 && (args[0].equalsIgnoreCase("blockbreak") || args[0].equalsIgnoreCase("itemspray") || args[0].equalsIgnoreCase("firework")))) {
+            } else if (args.length == 1 || (args.length >= 2 && (args[0].equalsIgnoreCase("blockbreak")|| args[0].equalsIgnoreCase("firework")))) {
                   if (args[0].equalsIgnoreCase("reload")) {
                         if (Permission.RELOAD.hasPerm(sender, true, true)) {
                               SparkTrailPlugin.getInstance().getConfig(SparkTrailPlugin.ConfigType.MAIN).reloadConfig();
@@ -223,10 +223,10 @@ public class TrailCommand implements CommandExecutor {
                               }
                               Player p = (Player) sender;
                               if (pt.requiresDataMenu()) {
-                                    if (pt == ParticleType.BLOCKBREAK || pt == ParticleType.ITEMSPRAY) {
+                                    if (pt == ParticleType.BLOCKBREAK) {
                                           if (Permission.hasEffectPerm(p, true, pt, null)) {
                                                 if (args.length == 1) {
-                                                      Lang.sendTo(p, Lang.INVALID_EFFECT_ARGS.toString().replace("%effect%", pt == ParticleType.BLOCKBREAK ? "Block Break" : "ItemSpray").replace("%extra_info%", "Structure: " + ChatColor.YELLOW + "<IdValue> <BlockMeta>"));
+                                                      Lang.sendTo(p, Lang.INVALID_EFFECT_ARGS.toString().replace("%effect%", pt == ParticleType.BLOCKBREAK ? "Block Break" : "").replace("%extra_info%", "Structure: " + ChatColor.YELLOW + "<IdValue> <BlockMeta>"));
                                                       return true;
                                                 }
 

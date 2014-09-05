@@ -71,7 +71,7 @@ public class EffectInputSuccessPrompt extends MessagePrompt {
 
       private ParticleDetails build() {
             ParticleDetails pd = new ParticleDetails(this.particleType);
-            if (this.particleType == ParticleType.BLOCKBREAK || this.particleType == ParticleType.ITEMSPRAY) {
+            if (this.particleType == ParticleType.BLOCKBREAK) {
                   pd.blockId = this.blockData.id;
                   pd.blockMeta = this.blockData.data;
             } else if (this.particleType == ParticleType.FIREWORK) {

@@ -44,7 +44,6 @@ public enum ParticleType {
       EMBER(Ember.class, 20, Material.TORCH, (short) 0, "Ember", false, true),
       ENDER(Ender.class, 20, Material.EYE_OF_ENDER, (short) 0, "Ender", false, true),
       EXPLOSION(Explosion.class, 20, Material.TNT, (short) 0, "Explosion", false, true),
-      ITEMSPRAY(ItemSpray.class, 20, Material.DIAMOND, (short) 0, "ItemSpray", true, true),
       FIRE(Fire.class, 20, Material.FIRE, (short) 0, "Fire", false, true),
       FIREWORK(Firework.class, 20, Material.FIREWORK, (short) 0, "Firework", true, true),
       FOOTSTEP(FootStep.class, 20, Material.CHAINMAIL_BOOTS, (short) 0, "FootStep", false, true),
@@ -173,7 +172,7 @@ public enum ParticleType {
                         if (fe != null) {
                               set.add(new Object[]{fe});
                         }
-                  } else if (this == BLOCKBREAK || this == ITEMSPRAY) {
+                  } else if (this == BLOCKBREAK) {
                         if (str.contains("-")) {
                               String[] split = str.split("-");
                               if (StringUtil.isInt(split[0]) && StringUtil.isInt(split[1])) {

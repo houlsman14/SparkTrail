@@ -164,8 +164,6 @@ public class DataFactory {
                                     builder.append(serialiseFireworkEffect(((Firework) e).fireworkEffect, "-"));
                               } else if (pt == ParticleType.BLOCKBREAK) {
                                     builder.append(((BlockBreak) e).idValue + "-" + ((BlockBreak) e).metaValue);
-                              } else if (pt == ParticleType.ITEMSPRAY) {
-                                    builder.append(((ItemSpray) e).idValue + "-" + ((ItemSpray) e).metaValue);
                               } else if (pt == ParticleType.POTION) {
                                     builder.append(((Potion) e).potionType.toString());
                               } else if (pt == ParticleType.SMOKE) {

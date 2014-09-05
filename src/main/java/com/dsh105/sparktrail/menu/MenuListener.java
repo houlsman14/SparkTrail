@@ -113,7 +113,7 @@ public class MenuListener implements Listener {
                                                 }
                                           }
                                     } else {
-                                          if (pt == ParticleType.BLOCKBREAK || pt == ParticleType.ITEMSPRAY || pt == ParticleType.FIREWORK) {
+                                          if (pt == ParticleType.BLOCKBREAK || pt == ParticleType.FIREWORK) {
                                                 if (Permission.hasEffectPerm(player, true, pt, (menu.playerName != null && menu.playerName.equals(player.getName())) ? null : menu.effectType.toString().toLowerCase())) {
                                                       if (inv.getItem(slot).equals(pt.getMenuItem(false))) {
                                                             removeEffect(player, menu.effectType, pt, menu);
@@ -125,12 +125,6 @@ public class MenuListener implements Listener {
                                                       WaitingData wd = new WaitingData(menu.effectType, pt);
                                                       wd.playerName = menu.playerName;
                                                       InputFactory.prompt(player, pt, wd);
-                                                      /*MenuChatListener.AWAITING_DATA.put(player.getName(), wd);
-                                                       if (pt == ParticleType.BLOCKBREAK || pt == ParticleType.ITEMSPRAY) {
-                                                       Lang.sendTo(player, Lang.ENTER_BLOCK_OR_ITEM.toString().replace("%effect%", pt == ParticleType.BLOCKBREAK ? "Block Break" : "ItemSpray"));
-                                                       } else if (pt == ParticleType.FIREWORK) {
-                                                       Lang.sendTo(player, Lang.ENTER_FIREWORK.toString());
-                                                       }*/
                                                       event.setCancelled(true);
                                                       player.closeInventory();
                                                       ParticleMenu.openMenus.remove(player.getName());

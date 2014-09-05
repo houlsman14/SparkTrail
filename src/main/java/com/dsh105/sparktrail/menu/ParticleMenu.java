@@ -120,7 +120,7 @@ public class ParticleMenu extends Menu {
                   if (pt == ParticleType.SOUND) {
                         continue;
                   }
-                  if (pt.requiresDataMenu() && pt != ParticleType.BLOCKBREAK && pt != ParticleType.ITEMSPRAY && pt != ParticleType.FIREWORK) {
+                  if (pt.requiresDataMenu() && pt != ParticleType.BLOCKBREAK && pt != ParticleType.FIREWORK) {
                         inv.setItem(i++, pt.getMenuItem());
                   } else {
                         boolean hasEffect = false;

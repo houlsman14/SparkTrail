@@ -76,12 +76,6 @@ public class EffectCreator {
                         return null;
                   }
                   e = new Firework(effectHolder, (FireworkEffect) o[0]);
-            } else if (particleType == ParticleType.ITEMSPRAY) {
-                  if (!checkArray(o, new Class[]{Integer.class, Integer.class})) {
-                        Logger.log(Logger.LogLevel.WARNING, "Encountered Class Cast error initiating Trail effect (" + particleType.toString() + ").", true);
-                        return null;
-                  }
-                  e = new ItemSpray(effectHolder, (Integer) o[0], (Integer) o[1]);
             } else if (particleType == ParticleType.POTION) {
                   if (!checkArray(o, new Class[]{Potion.PotionType.class})) {
                         Logger.log(Logger.LogLevel.WARNING, "Encountered Class Cast error initiating Trail effect (" + particleType.toString() + ").", true);

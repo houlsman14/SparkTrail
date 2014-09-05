@@ -221,17 +221,6 @@ public class SparkTrailPlugin extends DSHPlugin {
       }
 
       public void onDisable() {
-            //Handle old itemspray items.
-            for (World world : getServer().getWorlds()) {
-                  for (Chunk chunk : world.getLoadedChunks()) {
-                        for (Entity entity : chunk.getEntities()) {
-                              if (entity.hasMetadata("ItemSprayItem")) {
-                                    entity.remove();
-                              }
-                        }
-                  }
-            }
-
             this.getServer().getScheduler().cancelTasks(this);
             if (this.EH != null) {
                   this.EH.clearEffects();

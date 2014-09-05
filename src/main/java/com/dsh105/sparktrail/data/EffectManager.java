@@ -105,8 +105,6 @@ public class EffectManager {
                               String value = null;
                               if (pt == ParticleType.BLOCKBREAK) {
                                     value = ((BlockBreak) effect).idValue + "," + ((BlockBreak) effect).metaValue;
-                              } else if (pt == ParticleType.ITEMSPRAY) {
-                                    value = ((ItemSpray) effect).idValue + "," + ((ItemSpray) effect).metaValue;
                               } else if (pt == ParticleType.CRITICAL) {
                                     value = ((Critical) effect).criticalType.toString();
                               } else if (pt == ParticleType.FIREWORK) {
@@ -175,7 +173,7 @@ public class EffectManager {
                         if (pt.requiresDataMenu()) {
                               ParticleDetails pd = new ParticleDetails(pt);
                               String value = config.getString(path + "." + key);
-                              if (pt == ParticleType.BLOCKBREAK || pt == ParticleType.ITEMSPRAY) {
+                              if (pt == ParticleType.BLOCKBREAK) {
                                     try {
                                           pd.blockId = Integer.parseInt(value.split(",")[0]);
                                           pd.blockMeta = Integer.parseInt(value.split(",")[1]);

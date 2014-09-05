@@ -138,8 +138,7 @@ public abstract class Effect {
                   return "ID: " + ((BlockBreak) this).idValue + ", Meta:" + ((BlockBreak) this).metaValue;
             } else if (this.particleType == ParticleType.CRITICAL) {
                   return StringUtil.capitalise(((Critical) this).criticalType.toString());
-            } else if (this.particleType == ParticleType.ITEMSPRAY) {
-                  return "ID: " + ((ItemSpray) this).idValue + ", Meta:" + ((ItemSpray) this).metaValue;
+
             } else if (this.particleType == ParticleType.FIREWORK) {
                   return DataFactory.serialiseFireworkEffect(((Firework) this).fireworkEffect, ",");
             } /*else if (this.particleType == ParticleType.NOTE) {

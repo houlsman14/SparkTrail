@@ -56,9 +56,6 @@ public class ParticleDemo extends BukkitRunnable {
                   } else if (pt == ParticleType.CRITICAL) {
                         Critical c = new Critical(null, Critical.CriticalType.NORMAL);
                         c.playDemo(this.viewer);
-                  } else if (pt == ParticleType.ITEMSPRAY) {
-                        ItemSpray i = new ItemSpray(null, 264, 0);
-                        i.playDemo(this.viewer);
                   } else if (pt == ParticleType.FIREWORK) {
                         FireworkEffect fe = FireworkEffect.builder().withColor(Color.WHITE).withFade(Color.WHITE).trail(true).build();
                         Firework f = new Firework(null, fe);

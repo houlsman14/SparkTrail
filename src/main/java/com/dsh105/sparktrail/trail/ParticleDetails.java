@@ -68,7 +68,7 @@ public class ParticleDetails {
                   return this.o;
             }
 
-            if (particleType == ParticleType.BLOCKBREAK || particleType == ParticleType.ITEMSPRAY) {
+            if (particleType == ParticleType.BLOCKBREAK) {
                   return new Object[]{this.blockId, this.blockMeta};
             } else if (particleType == ParticleType.CRITICAL) {
                   return new Object[]{this.criticalType};

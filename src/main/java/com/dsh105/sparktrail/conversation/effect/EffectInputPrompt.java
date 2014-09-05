@@ -60,7 +60,7 @@ public class EffectInputPrompt extends ValidatingPrompt {
                         this.successPrompt = new EffectInputSuccessPrompt(this.particleType, this.data, fe);
                         return true;
                   }
-            } else if (this.particleType == ParticleType.BLOCKBREAK || this.particleType == ParticleType.ITEMSPRAY) {
+            } else if (this.particleType == ParticleType.BLOCKBREAK) {
                   if (!StringUtil.isInt(s)) {
                         return false;
                   }
@@ -91,7 +91,7 @@ public class EffectInputPrompt extends ValidatingPrompt {
 
       @Override
       public String getPromptText(ConversationContext conversationContext) {
-            if (this.particleType == ParticleType.BLOCKBREAK || this.particleType == ParticleType.ITEMSPRAY) {
+            if (this.particleType == ParticleType.BLOCKBREAK) {
                   if (this.isSecondInput) {
                         return Lang.INPUT_SECOND_METAVALUE.toString();
                   } else {
