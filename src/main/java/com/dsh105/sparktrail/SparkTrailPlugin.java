@@ -34,7 +34,6 @@ import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.listeners.PlayerListener;
 import com.dsh105.sparktrail.menu.MenuListener;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
-import com.dsh105.sparktrail.trail.type.ItemSpray;
 import com.dsh105.sparktrail.util.Lang;
 import com.dsh105.sparktrail.util.Permission;
 import com.jolbox.bonecp.BoneCP;
@@ -45,7 +44,6 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -220,15 +218,6 @@ public class SparkTrailPlugin extends DSHPlugin {
             manager.registerEvents(new MenuListener(), this);
             manager.registerEvents(new MenuChatListener(), this);
             manager.registerEvents(new PlayerListener(), this);
-
-            try {
-                  Metrics metrics = new Metrics(this);
-                  metrics.start();
-            } catch (IOException e) {
-                  Logger.log(Logger.LogLevel.WARNING, "Plugin Metrics (MCStats) has failed to start.", e, false);
-            }
-
-            this.checkUpdates();
       }
 
       public void onDisable() {
@@ -240,7 +229,6 @@ public class SparkTrailPlugin extends DSHPlugin {
                                     entity.remove();
                               }
                         }
-                        chunk.unload(true, true);
                   }
             }
 
