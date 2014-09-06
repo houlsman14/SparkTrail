@@ -34,6 +34,7 @@ import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.listeners.PlayerListener;
 import com.dsh105.sparktrail.menu.MenuListener;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
+import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.util.Lang;
 import com.dsh105.sparktrail.util.Permission;
 import com.jolbox.bonecp.BoneCP;
@@ -82,6 +83,7 @@ public class SparkTrailPlugin extends DSHPlugin {
       public String prefix = "" + ChatColor.DARK_GREEN + "ST" + ChatColor.GREEN + " » " + ChatColor.RESET;
       public String cmdString = "trail";
 
+      @Override
       public void onEnable() {
             super.onEnable();
 
@@ -220,10 +222,12 @@ public class SparkTrailPlugin extends DSHPlugin {
             manager.registerEvents(new PlayerListener(), this);
       }
 
+      @Override
       public void onDisable() {
-            this.getServer().getScheduler().cancelTasks(this);
-            if (this.EH != null) {
-                  this.EH.clearEffects();
+            SparkTrailPlugin plugin = SparkTrailPlugin.getInstance();
+            for (EffectHolder e : plugin.EH.getEffectHolders()) {
+                  plugin.EH.save(e);
+                  SQLEffectManager.instance.updateAsync(e.getDetails().playerName, e);
             }
       }
 
