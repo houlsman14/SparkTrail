@@ -225,15 +225,16 @@ public class SparkTrailPlugin extends DSHPlugin {
       @Override
       public void onDisable() {
             int current_count = 0;
-            
+
             for (EffectHolder e : EH.getEffectHolders()) {
                   if (current_count > 999) {
                         break;
                   }
-                  
+
+                  System.out.println("[SparkTrail] Saving user " + e.getDetails().playerName);
+
                   EH.save(e);
                   SQLEffectManager.instance.updateAsync(e.getDetails().playerName, e);
-                  System.out.println("Saved user " + e.getDetails().playerName);
                   current_count++;
             }
       }
