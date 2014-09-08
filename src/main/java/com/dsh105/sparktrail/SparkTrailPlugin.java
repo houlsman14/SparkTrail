@@ -34,26 +34,21 @@ import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.listeners.PlayerListener;
 import com.dsh105.sparktrail.menu.MenuListener;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
-import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.util.Lang;
 import com.dsh105.sparktrail.util.Permission;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 
@@ -186,6 +181,18 @@ public class SparkTrailPlugin extends DSHPlugin {
                                       + ");");
                         } catch (SQLException e) {
                               Logger.log(Logger.LogLevel.SEVERE, "MySQL DataBase Table initiation has failed.", e, true);
+                        } finally {
+                              try {
+                                    if (statement != null && !statement.isClosed()) {
+                                          statement.close();
+                                    }
+                                    
+                                    if (connection != null && !connection.isClosed()) {
+                                          connection.close();
+                                    }
+                              } catch (SQLException ex) {
+                                    ex.printStackTrace();
+                              }
                         }
                   }
             }

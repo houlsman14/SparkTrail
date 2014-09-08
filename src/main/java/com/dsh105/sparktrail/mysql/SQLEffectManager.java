@@ -40,6 +40,7 @@ public class SQLEffectManager {
             if (ConfigOptions.instance.useSql()) {
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
+                              @Cleanup
                               Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
                               @Cleanup
                               PreparedStatement statement = con.prepareStatement("INSERT INTO PlayerEffects (PlayerName, Effects) VALUES (?, ?);");
@@ -58,6 +59,7 @@ public class SQLEffectManager {
                         try {
                               createData(player_name);
                               if (eh == null || eh.getEffects() == null || eh.getEffects().isEmpty()) {
+                                    @Cleanup
                                     Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
                                     @Cleanup
                                     PreparedStatement statement = con.prepareStatement("UPDATE PlayerEffects SET Effects = ? WHERE PlayerName = ?");
@@ -68,6 +70,7 @@ public class SQLEffectManager {
                               }
 
                               if (eh.getEffectType().equals(EffectHolder.EffectType.PLAYER)) {
+                                    @Cleanup
                                     Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
                                     String data = DataFactory.serialiseEffects(eh.getEffects(), false, false, true);
                                     @Cleanup
@@ -87,6 +90,7 @@ public class SQLEffectManager {
             if (ConfigOptions.instance.useSql()) {
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
+                              @Cleanup
                               Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
                               @Cleanup
                               PreparedStatement statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
