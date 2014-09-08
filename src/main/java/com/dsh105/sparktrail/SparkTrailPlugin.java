@@ -222,17 +222,15 @@ public class SparkTrailPlugin extends DSHPlugin {
             manager.registerEvents(new MenuChatListener(), this);
             manager.registerEvents(new PlayerListener(), this);
       }
-      
+
       @Override
       public void onDisable() {
-            for (Player player : getServer().getOnlinePlayers()) {
-                  EffectHolder eh = EffectManager.getInstance().getEffect(player.getName());
-                  EffectManager.getInstance().save(eh);
-                  SQLEffectManager.instance.updateAsync(player.getName(), eh);
-                  EffectManager.getInstance().clearFromMemory(eh);
+            this.getServer().getScheduler().cancelTasks(this);
+            if (this.EH != null) {
+                  this.EH.clearEffects();
             }
       }
-      
+
       public static SparkTrailPlugin getInstance() {
             return (SparkTrailPlugin) getPluginInstance();
       }
