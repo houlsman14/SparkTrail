@@ -21,19 +21,12 @@ import com.dsh105.sparktrail.config.ConfigOptions;
 import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
 import com.dsh105.sparktrail.util.Lang;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPortalEnterEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
@@ -42,9 +35,7 @@ public class PlayerListener implements Listener {
       public void onQuit(PlayerQuitEvent event) {
             Player p = event.getPlayer();
             EffectHolder eh = EffectManager.getInstance().getEffect(p.getName());
-
             EffectManager.getInstance().remove(p.getName(), eh);
-
       }
 
       @EventHandler(priority = EventPriority.MONITOR)

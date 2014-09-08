@@ -53,6 +53,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 
@@ -216,24 +217,26 @@ public class SparkTrailPlugin extends DSHPlugin {
             cmd.setExecutor(new TrailCommand(cmdString));
             cmd.setTabCompleter(new CommandComplete());
             this.cmdString = cmdString;
-
+            
             manager.registerEvents(new MenuListener(), this);
             manager.registerEvents(new MenuChatListener(), this);
             manager.registerEvents(new PlayerListener(), this);
       }
-
+      
       @Override
       public void onDisable() {
-            for (EffectHolder e : EH.getEffectHolders()) {
-                  EH.save(e);
-                  SQLEffectManager.instance.updateAsync(e.getDetails().playerName, e);
+            for (Player player : getServer().getOnlinePlayers()) {
+                  EffectHolder eh = EffectManager.getInstance().getEffect(player.getName());
+                  EffectManager.getInstance().save(eh);
+                  SQLEffectManager.instance.updateAsync(player.getName(), eh);
+                  EffectManager.getInstance().clearFromMemory(eh);
             }
       }
-
+      
       public static SparkTrailPlugin getInstance() {
             return (SparkTrailPlugin) getPluginInstance();
       }
-
+      
       public SparkTrailAPI getAPI() {
             return this.api;
       }
