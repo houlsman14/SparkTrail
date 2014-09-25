@@ -84,7 +84,7 @@ public class TrailCommand implements CommandExecutor {
                         return true;
                   }
 
-            } else if (args.length == 1 || (args.length >= 2 && (args[0].equalsIgnoreCase("blockbreak")|| args[0].equalsIgnoreCase("firework")))) {
+            } else if (args.length == 1 || (args.length >= 2 && (args[0].equalsIgnoreCase("blockbreak") || args[0].equalsIgnoreCase("firework")))) {
                   if (args[0].equalsIgnoreCase("reload")) {
                         if (Permission.RELOAD.hasPerm(sender, true, true)) {
                               SparkTrailPlugin.getInstance().getConfig(SparkTrailPlugin.ConfigType.MAIN).reloadConfig();

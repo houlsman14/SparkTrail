@@ -19,6 +19,7 @@ package com.dsh105.sparktrail.data;
 import com.dsh105.sparktrail.SparkTrailPlugin;
 import com.dsh105.sparktrail.mysql.SQLEffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
+import java.util.ArrayList;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AutoSave {
@@ -27,9 +28,9 @@ public class AutoSave {
             new BukkitRunnable() {
                   public void run() {
                         SparkTrailPlugin plugin = SparkTrailPlugin.getInstance();
-                        for (EffectHolder e : plugin.EH.getEffectHolders()) {
-                              plugin.EH.save(e);
-                              SQLEffectManager.instance.updateAsync(e.getDetails().playerName, e);
+                        for (EffectHolder effect : new ArrayList<EffectHolder>(plugin.EH.getEffectHolders())) {
+                              plugin.EH.save(effect);
+                              SQLEffectManager.instance.updateAsync(effect.getDetails().playerName, effect);
                         }
                   }
             }.runTaskTimerAsynchronously(SparkTrailPlugin.getInstance(), (20 * timer) / 2, 20 * timer);

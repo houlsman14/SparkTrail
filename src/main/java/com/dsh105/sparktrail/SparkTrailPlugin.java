@@ -17,7 +17,6 @@
 package com.dsh105.sparktrail;
 
 import com.dsh105.dshutils.DSHPlugin;
-import com.dsh105.dshutils.Metrics;
 import com.dsh105.dshutils.Updater;
 import com.dsh105.dshutils.command.CustomCommand;
 import com.dsh105.dshutils.config.YAMLConfig;
@@ -43,7 +42,6 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -186,7 +184,7 @@ public class SparkTrailPlugin extends DSHPlugin {
                                     if (statement != null && !statement.isClosed()) {
                                           statement.close();
                                     }
-                                    
+
                                     if (connection != null && !connection.isClosed()) {
                                           connection.close();
                                     }
@@ -224,7 +222,7 @@ public class SparkTrailPlugin extends DSHPlugin {
             cmd.setExecutor(new TrailCommand(cmdString));
             cmd.setTabCompleter(new CommandComplete());
             this.cmdString = cmdString;
-            
+
             manager.registerEvents(new MenuListener(), this);
             manager.registerEvents(new MenuChatListener(), this);
             manager.registerEvents(new PlayerListener(), this);
@@ -241,7 +239,7 @@ public class SparkTrailPlugin extends DSHPlugin {
       public static SparkTrailPlugin getInstance() {
             return (SparkTrailPlugin) getPluginInstance();
       }
-      
+
       public SparkTrailAPI getAPI() {
             return this.api;
       }
