@@ -41,7 +41,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class EffectManager {
 
       private static EffectManager instance;
-      private CopyOnWriteArrayList<EffectHolder> effects = new CopyOnWriteArrayList<EffectHolder>();
+      private HashSet<EffectHolder> effects = new HashSet<EffectHolder>();
 
       public EffectManager() {
             instance = this;
@@ -73,16 +73,12 @@ public class EffectManager {
             }
       }
 
-      public CopyOnWriteArrayList<EffectHolder> getEffectHolders() {
+      public HashSet<EffectHolder> getEffectHolders() {
             return this.effects;
       }
 
       public void save(EffectHolder e) {
-            if (e == null) {
-                  return;
-            }
-
-            if (ConfigOptions.instance.useSql()) {
+            if (e == null || ConfigOptions.instance.useSql()) {
                   return;
             }
 

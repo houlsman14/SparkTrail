@@ -45,13 +45,13 @@ public class PlayerListener implements Listener {
                   new BukkitRunnable() {
                         @Override
                         public void run() {
-                              EffectHolder eh = SparkTrailPlugin.getInstance().SQLH.load(p.getName());
+                              EffectHolder eh = SparkTrailPlugin.getInstance().SQLH.loadAsync(p.getName());
                               if (eh != null && !eh.getEffects().isEmpty()) {
                                     Lang.sendTo(p, Lang.EFFECTS_LOADED.toString());
                               }
                         }
                         //Later on.
-                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 60L);
+                  }.runTaskLaterAsynchronously(SparkTrailPlugin.getInstance(), 20L);
                   return;
             }
             new BukkitRunnable() {

@@ -26,6 +26,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lombok.Cleanup;
 
 public class SQLEffectManager {
@@ -86,7 +88,7 @@ public class SQLEffectManager {
             }
       }
 
-      public EffectHolder load(String playerName) {
+      public EffectHolder loadAsync(final String playerName) {
             if (ConfigOptions.instance.useSql()) {
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
@@ -95,13 +97,26 @@ public class SQLEffectManager {
                               @Cleanup
                               PreparedStatement statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
                               statement.setString(1, playerName);
-                              ResultSet rs = statement.executeQuery();
-                              while (rs.next()) {
-                                    EffectManager.getInstance().clearFromMemory(EffectManager.getInstance().getEffect(playerName));
-                                    EffectHolder eh = EffectCreator.createPlayerHolder(playerName);
-                                    String effects = rs.getString("Effects");
-                                    DataFactory.addEffectsFrom(effects, eh);
-                              }
+                              final ResultSet rs = statement.executeQuery();
+
+                              SparkTrailPlugin.getInstance().getServer().getScheduler().runTask(SparkTrailPlugin.getInstance(), new Runnable() {
+                                    public void run() {
+                                          try {
+                                                while (rs.next()) {
+                                                      EffectManager.getInstance().clearFromMemory(EffectManager.getInstance().getEffect(playerName));
+                                                      EffectHolder eh = EffectCreator.createPlayerHolder(playerName);
+                                                      String effects = rs.getString("Effects");
+                                                      DataFactory.addEffectsFrom(effects, eh);
+                                                }
+
+                                                if (!rs.isClosed()) {
+                                                      rs.close();
+                                                }
+                                          } catch (SQLException ex) {
+                                                ex.printStackTrace();
+                                          }
+                                    }
+                              });
                         } catch (SQLException e) {
                               e.printStackTrace();
                         }
