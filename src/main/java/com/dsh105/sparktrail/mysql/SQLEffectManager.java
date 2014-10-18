@@ -92,10 +92,9 @@ public class SQLEffectManager {
             if (ConfigOptions.instance.useSql()) {
                   if (SparkTrailPlugin.getInstance().dbPool != null) {
                         try {
-                              @Cleanup
-                              Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
-                              @Cleanup
-                              PreparedStatement statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
+
+                              final Connection con = SparkTrailPlugin.getInstance().dbPool.getConnection();
+                              final PreparedStatement statement = con.prepareStatement("SELECT * FROM PlayerEffects WHERE PlayerName = ?;");
                               statement.setString(1, playerName);
                               final ResultSet rs = statement.executeQuery();
 
@@ -109,6 +108,14 @@ public class SQLEffectManager {
                                                       DataFactory.addEffectsFrom(effects, eh);
                                                 }
 
+                                                if (!con.isClosed()) {
+                                                      con.close();
+                                                }
+                                                
+                                                if (!statement.isClosed()) {
+                                                      statement.close();
+                                                }
+                                                
                                                 if (!rs.isClosed()) {
                                                       rs.close();
                                                 }
