@@ -36,11 +36,12 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EffectManager {
 
       private static EffectManager instance;
-      private HashSet<EffectHolder> effects = new HashSet<EffectHolder>();
+      private CopyOnWriteArrayList<EffectHolder> effects = new CopyOnWriteArrayList<EffectHolder>();
 
       public EffectManager() {
             instance = this;
@@ -72,7 +73,7 @@ public class EffectManager {
             }
       }
 
-      public HashSet<EffectHolder> getEffectHolders() {
+      public CopyOnWriteArrayList<EffectHolder> getEffectHolders() {
             return this.effects;
       }
 

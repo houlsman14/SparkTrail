@@ -20,6 +20,7 @@ import com.dsh105.sparktrail.data.EffectManager;
 import com.dsh105.sparktrail.trail.EffectHolder;
 
 import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SparkTrailAPI {
 
@@ -33,7 +34,7 @@ public class SparkTrailAPI {
             return this.playerAPI;
       }
 
-      public HashSet<EffectHolder> getAllActiveEffects() {
+      public CopyOnWriteArrayList<EffectHolder> getAllActiveEffects() {
             return EffectManager.getInstance().getEffectHolders();
       }
 }
